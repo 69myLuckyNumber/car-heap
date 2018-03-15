@@ -13,6 +13,7 @@ using car_heap.Persistence;
 using Microsoft.EntityFrameworkCore;
 using car_heap.Persistence.Concrete;
 using car_heap.Persistence.Abstract;
+using AutoMapper;
 
 namespace car_heap
 {
@@ -30,6 +31,8 @@ namespace car_heap
         {
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            services.AddAutoMapper();
 
             services.AddDbContext<AppDbContext>(options => 
                 options.UseSqlServer(Configuration.GetConnectionString("Default")));
