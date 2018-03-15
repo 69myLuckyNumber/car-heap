@@ -11,6 +11,8 @@ namespace car_heap.Persistence
 
         public DbSet<Make> Makes { get; set; }
 
+        public DbSet<Model> Models { get; set; }
+
         public DbSet<Order> Orders { get; set; }
 
         public DbSet<Contact> Contacts { get; set; }

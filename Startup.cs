@@ -33,7 +33,7 @@ namespace car_heap
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public async void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -60,6 +60,17 @@ namespace car_heap
                     name: "spa-fallback",
                     defaults: new { controller = "Home", action = "Index" });
             });
+
+            await SeedDataAsync(app);
+           
+        }
+
+        private async Task SeedDataAsync(IApplicationBuilder app)
+        {
+            using(var serviceScope = app.ApplicationServices.CreateScope())
+            {
+                await SeedData.SeedAsync(serviceScope.ServiceProvider.GetRequiredService<AppDbContext>());
+            }
         }
     }
 }
