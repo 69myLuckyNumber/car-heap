@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+
 using car_heap.Core.Models;
 using car_heap.Core.Abstract;
-using Microsoft.EntityFrameworkCore;
 
 namespace car_heap.Persistence.Repositories
 {

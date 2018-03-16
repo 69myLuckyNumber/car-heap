@@ -3,7 +3,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace car_heap.Core.Models
 {
-    [Table("Features")]
     public class Feature
     {
         public int FeatureId { get; set; }

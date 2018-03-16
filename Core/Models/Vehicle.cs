@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
@@ -15,7 +16,7 @@ namespace car_heap.Core.Models
 
         public bool IsRegistered { get; set; }
 
-        public bool LastUpdated { get; set; }
+        public DateTime LastUpdated { get; set; }
 
         public ICollection<Feature> Features { get; set; }
 
@@ -30,6 +31,7 @@ namespace car_heap.Core.Models
         public Vehicle()
         {
             Features = new Collection<Feature>();
+            Orders = new Collection<Order>();
         }
     }
 }
