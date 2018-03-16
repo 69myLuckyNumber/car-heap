@@ -30,6 +30,7 @@ namespace car_heap
         public void ConfigureServices(IServiceCollection services)
         {
 
+            services.AddScoped<IMakeRepository, MakeRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddAutoMapper();

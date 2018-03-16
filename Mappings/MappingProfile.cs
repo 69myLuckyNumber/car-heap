@@ -1,4 +1,6 @@
 using AutoMapper;
+using car_heap.Models;
+using car_heap.Controllers.Resources;
 
 namespace car_heap.Mappings
 {
@@ -6,7 +8,10 @@ namespace car_heap.Mappings
     {
         public MappingProfile()
         {
-            // Mappings here
+            // Domain to API Resources
+            CreateMap<Make, MakeResource>();
+            CreateMap<Model, ModelResource>();
+
         }
     }
 }
