@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace car_heap.Models
+namespace car_heap.Core.Models
 {
     [Table("Features")]
     public class Feature

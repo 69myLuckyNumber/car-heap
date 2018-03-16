@@ -1,10 +1,11 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using car_heap.Models;
-using car_heap.Persistence.Abstract;
 using Microsoft.EntityFrameworkCore;
 
-namespace car_heap.Persistence.Concrete
+using car_heap.Core.Abstract;
+using car_heap.Core.Models;
+
+namespace car_heap.Persistence.Repositories
 {
     public class FeatureRepository : IFeatureRepository
     {

@@ -1,6 +1,6 @@
 using System;
 
-namespace car_heap.Models
+namespace car_heap.Core.Models
 {
     public class Order
     {

@@ -11,9 +11,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 using car_heap.Persistence;
 using Microsoft.EntityFrameworkCore;
-using car_heap.Persistence.Concrete;
-using car_heap.Persistence.Abstract;
 using AutoMapper;
+using car_heap.Core.Abstract;
+using car_heap.Persistence.Repositories;
 
 namespace car_heap
 {

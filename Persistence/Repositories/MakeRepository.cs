@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using car_heap.Models;
-using car_heap.Persistence.Abstract;
+using car_heap.Core.Models;
+using car_heap.Core.Abstract;
 using Microsoft.EntityFrameworkCore;
 
-namespace car_heap.Persistence.Concrete
+namespace car_heap.Persistence.Repositories
 {
     public class MakeRepository : IMakeRepository
     {

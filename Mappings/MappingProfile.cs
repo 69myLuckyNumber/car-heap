@@ -1,6 +1,6 @@
 using AutoMapper;
-using car_heap.Models;
 using car_heap.Controllers.Resources;
+using car_heap.Core.Models;
 
 namespace car_heap.Mappings
 {

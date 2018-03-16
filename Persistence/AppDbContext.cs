@@ -1,4 +1,4 @@
-using car_heap.Models;
+using car_heap.Core.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace car_heap.Persistence

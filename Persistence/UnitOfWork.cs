@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
-using car_heap.Persistence.Abstract;
+using car_heap.Core.Abstract;
 
-namespace car_heap.Persistence.Concrete
+namespace car_heap.Persistence
 {
     public class UnitOfWork : IUnitOfWork
     {

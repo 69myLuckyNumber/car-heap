@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using car_heap.Controllers.Resources;
-using car_heap.Persistence.Abstract;
+using car_heap.Core.Abstract;
 using Microsoft.AspNetCore.Mvc;
 
 namespace car_heap.Controllers

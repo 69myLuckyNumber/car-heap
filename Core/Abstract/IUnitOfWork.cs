@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-namespace car_heap.Persistence.Abstract
+namespace car_heap.Core.Abstract
 {
     public interface IUnitOfWork
     {
