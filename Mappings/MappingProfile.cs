@@ -11,7 +11,7 @@ namespace car_heap.Mappings
             // Domain to API Resources
             CreateMap<Make, MakeResource>();
             CreateMap<Model, ModelResource>();
-
+            CreateMap<Feature, FeatureResource>();
         }
     }
 }

@@ -19,7 +19,7 @@ namespace car_heap.Persistence
 
         public DbSet<Integration> Integrations { get; set; }
 
-        public DbSet<Integration> Features { get; set; }
+        public DbSet<Feature> Features { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
