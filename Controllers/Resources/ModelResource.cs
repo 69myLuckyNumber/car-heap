@@ -1,9 +1,6 @@
 namespace car_heap.Controllers.Resources
 {
-    public class ModelResource
+    public class ModelResource : KeyValuePairResource
     {
-        public int ModelId { get; set; }
-
-        public string Name { get; set; }
     }
 }

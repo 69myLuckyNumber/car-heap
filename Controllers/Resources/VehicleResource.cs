@@ -1,0 +1,34 @@
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
+
+namespace car_heap.Controllers.Resources
+{
+    public class VehicleResource 
+    {
+        public int Id { get; set; }
+
+        [StringLength(255)]
+        public string Name { get; set; }
+
+        public bool IsRegistered { get; set; }
+
+        public bool LastUpdated { get; set; }
+
+        public KeyValuePairResource Model { get; set; }
+
+        public KeyValuePairResource Makes { get; set; }
+
+        public UserResource User { get; set; }
+
+        public ICollection<FeatureResource> Features { get; set; }
+
+        public ICollection<OrderResource> Orders { get; set; }
+
+        public VehicleResource()
+        {
+            Features = new Collection<FeatureResource>();
+            Orders = new Collection<OrderResource>();
+        }
+    }
+}
