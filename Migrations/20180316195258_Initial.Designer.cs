@@ -11,7 +11,7 @@ using System;
 namespace carheap.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20180314211514_Initial")]
+    [Migration("20180316195258_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,7 +21,7 @@ namespace carheap.Migrations
                 .HasAnnotation("ProductVersion", "2.0.1-rtm-125")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("car_heap.Models.Contact", b =>
+            modelBuilder.Entity("car_heap.Core.Models.Contact", b =>
                 {
                     b.Property<int>("ContactId")
                         .ValueGeneratedOnAdd();
@@ -49,7 +49,7 @@ namespace carheap.Migrations
                     b.ToTable("Contacts");
                 });
 
-            modelBuilder.Entity("car_heap.Models.Feature", b =>
+            modelBuilder.Entity("car_heap.Core.Models.Feature", b =>
                 {
                     b.Property<int>("FeatureId")
                         .ValueGeneratedOnAdd();
@@ -71,7 +71,7 @@ namespace carheap.Migrations
                     b.ToTable("Features");
                 });
 
-            modelBuilder.Entity("car_heap.Models.Integration", b =>
+            modelBuilder.Entity("car_heap.Core.Models.Integration", b =>
                 {
                     b.Property<int>("FeatureId");
 
@@ -88,7 +88,7 @@ namespace carheap.Migrations
                     b.ToTable("Integrations");
                 });
 
-            modelBuilder.Entity("car_heap.Models.Make", b =>
+            modelBuilder.Entity("car_heap.Core.Models.Make", b =>
                 {
                     b.Property<int>("MakeId")
                         .ValueGeneratedOnAdd();
@@ -102,7 +102,7 @@ namespace carheap.Migrations
                     b.ToTable("Makes");
                 });
 
-            modelBuilder.Entity("car_heap.Models.Model", b =>
+            modelBuilder.Entity("car_heap.Core.Models.Model", b =>
                 {
                     b.Property<int>("ModelId")
                         .ValueGeneratedOnAdd();
@@ -120,7 +120,7 @@ namespace carheap.Migrations
                     b.ToTable("Models");
                 });
 
-            modelBuilder.Entity("car_heap.Models.Order", b =>
+            modelBuilder.Entity("car_heap.Core.Models.Order", b =>
                 {
                     b.Property<int>("UserId");
 
@@ -143,7 +143,7 @@ namespace carheap.Migrations
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("car_heap.Models.Status", b =>
+            modelBuilder.Entity("car_heap.Core.Models.Status", b =>
                 {
                     b.Property<int>("StatusId")
                         .ValueGeneratedOnAdd();
@@ -157,7 +157,7 @@ namespace carheap.Migrations
                     b.ToTable("Statuses");
                 });
 
-            modelBuilder.Entity("car_heap.Models.User", b =>
+            modelBuilder.Entity("car_heap.Core.Models.User", b =>
                 {
                     b.Property<int>("UserId")
                         .ValueGeneratedOnAdd();
@@ -176,14 +176,14 @@ namespace carheap.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("car_heap.Models.Vehicle", b =>
+            modelBuilder.Entity("car_heap.Core.Models.Vehicle", b =>
                 {
                     b.Property<int>("VehicleId")
                         .ValueGeneratedOnAdd();
 
                     b.Property<bool>("IsRegistered");
 
-                    b.Property<bool>("LastUpdated");
+                    b.Property<DateTime>("LastUpdated");
 
                     b.Property<int>("ModelId");
 
@@ -201,68 +201,68 @@ namespace carheap.Migrations
                     b.ToTable("Vehicles");
                 });
 
-            modelBuilder.Entity("car_heap.Models.Contact", b =>
+            modelBuilder.Entity("car_heap.Core.Models.Contact", b =>
                 {
-                    b.HasOne("car_heap.Models.User", "User")
+                    b.HasOne("car_heap.Core.Models.User", "User")
                         .WithOne("Contact")
-                        .HasForeignKey("car_heap.Models.Contact", "UserId")
+                        .HasForeignKey("car_heap.Core.Models.Contact", "UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("car_heap.Models.Feature", b =>
+            modelBuilder.Entity("car_heap.Core.Models.Feature", b =>
                 {
-                    b.HasOne("car_heap.Models.Vehicle")
+                    b.HasOne("car_heap.Core.Models.Vehicle")
                         .WithMany("Features")
                         .HasForeignKey("VehicleId");
                 });
 
-            modelBuilder.Entity("car_heap.Models.Integration", b =>
+            modelBuilder.Entity("car_heap.Core.Models.Integration", b =>
                 {
-                    b.HasOne("car_heap.Models.Feature", "Feature")
+                    b.HasOne("car_heap.Core.Models.Feature", "Feature")
                         .WithMany()
                         .HasForeignKey("FeatureId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("car_heap.Models.Vehicle", "Vehicle")
+                    b.HasOne("car_heap.Core.Models.Vehicle", "Vehicle")
                         .WithMany()
                         .HasForeignKey("VehicleId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("car_heap.Models.Model", b =>
+            modelBuilder.Entity("car_heap.Core.Models.Model", b =>
                 {
-                    b.HasOne("car_heap.Models.Make", "Make")
+                    b.HasOne("car_heap.Core.Models.Make", "Make")
                         .WithMany("Models")
                         .HasForeignKey("MakeId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("car_heap.Models.Order", b =>
+            modelBuilder.Entity("car_heap.Core.Models.Order", b =>
                 {
-                    b.HasOne("car_heap.Models.Status", "Status")
+                    b.HasOne("car_heap.Core.Models.Status", "Status")
                         .WithMany()
                         .HasForeignKey("StatusId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("car_heap.Models.User", "User")
+                    b.HasOne("car_heap.Core.Models.User", "User")
                         .WithMany("Orders")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("car_heap.Models.Vehicle", "Vehicle")
+                    b.HasOne("car_heap.Core.Models.Vehicle", "Vehicle")
                         .WithMany("Orders")
                         .HasForeignKey("VehicleId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 
-            modelBuilder.Entity("car_heap.Models.Vehicle", b =>
+            modelBuilder.Entity("car_heap.Core.Models.Vehicle", b =>
                 {
-                    b.HasOne("car_heap.Models.Model", "Model")
+                    b.HasOne("car_heap.Core.Models.Model", "Model")
                         .WithMany("Vehicles")
                         .HasForeignKey("ModelId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("car_heap.Models.User", "User")
+                    b.HasOne("car_heap.Core.Models.User", "User")
                         .WithMany("OfferedVehicles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);

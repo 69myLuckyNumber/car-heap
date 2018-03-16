@@ -100,7 +100,7 @@ namespace carheap.Migrations
                     VehicleId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     IsRegistered = table.Column<bool>(nullable: false),
-                    LastUpdated = table.Column<bool>(nullable: false),
+                    LastUpdated = table.Column<DateTime>(nullable: false),
                     ModelId = table.Column<int>(nullable: false),
                     Name = table.Column<string>(maxLength: 255, nullable: true),
                     UserId = table.Column<int>(nullable: false)
