@@ -9,6 +9,15 @@ namespace car_heap.Persistence
         public static async Task SeedAsync(AppDbContext context)
         {
             context.Database.Migrate();
+            if(await context.Features.CountAsync() == 0)
+            {
+                await context.AddRangeAsync(
+                    new Feature {Name = "Airbag", Description = "Such a nice airbag"},
+                    new Feature { Name = "Antilock Bracking System", Description = "Bla bla bla" },
+                    new Feature { Name = "Tracking System", Description = "Some description"}
+                );
+                await context.SaveChangesAsync();
+            }
 
             if(await context.Makes.CountAsync() == 0)
             {
