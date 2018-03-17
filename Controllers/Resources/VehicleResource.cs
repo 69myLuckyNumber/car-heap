@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
@@ -13,7 +14,7 @@ namespace car_heap.Controllers.Resources
 
         public bool IsRegistered { get; set; }
 
-        public bool LastUpdated { get; set; }
+        public DateTime LastUpdated { get; set; }
 
         public KeyValuePairResource Model { get; set; }
 
