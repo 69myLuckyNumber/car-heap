@@ -40,7 +40,7 @@ namespace car_heap.Persistence
             // Many to Many: Vehicle - Feature 
             modelBuilder.Entity<Integration>()
                 .HasKey(i => new { i.FeatureId, i.VehicleId });
-
+                
             // Many to Many: User - Vehicle
             modelBuilder.Entity<Order>()
                 .HasKey(o => new { o.UserId, o.VehicleId });
