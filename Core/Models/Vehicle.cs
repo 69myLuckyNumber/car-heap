@@ -18,7 +18,7 @@ namespace car_heap.Core.Models
 
         public DateTime LastUpdated { get; set; }
 
-        public ICollection<Feature> Features { get; set; }
+        public ICollection<Integration> Features { get; set; }
 
         public ICollection<Order> Orders { get; set; }
 
@@ -30,7 +30,7 @@ namespace car_heap.Core.Models
 
         public Vehicle()
         {
-            Features = new Collection<Feature>();
+            Features = new Collection<Integration>();
             Orders = new Collection<Order>();
         }
     }
