@@ -39,5 +39,26 @@ namespace car_heap.Controllers
             var vr = mapper.Map<VehicleResource>(vehicle);
             return Ok(vr);
         }
+
+        [HttpPut("update/{id}")]
+        public async Task<IActionResult> UpdateVehicle(int id,[FromBody] SaveVehicleResource resouce)
+        {
+            if(!ModelState.IsValid)
+                return BadRequest(ModelState);
+            
+            var vehicle = await repository.GetVehicleAsync(id);
+
+            if(vehicle == null)
+                return BadRequest();
+            
+            mapper.Map<SaveVehicleResource, Vehicle>(resouce, vehicle);
+
+            await uow.CommitAsync();
+
+            var result = await repository.GetVehicleAsync(id);
+            var mappedResult = mapper.Map<VehicleResource>(result);
+
+            return Ok(mappedResult);
+        }
     }
 }
