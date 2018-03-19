@@ -8,5 +8,7 @@ namespace car_heap.Core.Abstract
         Task AddVehicleAsync(Vehicle vehicle);
 
         Task<Vehicle> GetVehicleAsync(int id, bool includeRelated = true);
+
+        void RemoveVehicle(Vehicle vehicle);
     }
 }

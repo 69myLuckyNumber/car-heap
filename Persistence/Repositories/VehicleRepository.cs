@@ -34,5 +34,10 @@ namespace car_heap.Persistence.Repositories
                     .ThenInclude(v => v.Contact)
                 .SingleOrDefaultAsync(v => v.VehicleId == id);
         }
+
+        public void RemoveVehicle(Vehicle vehicle)
+        {
+            context.Vehicles.Remove(vehicle);
+        }
     }
 }

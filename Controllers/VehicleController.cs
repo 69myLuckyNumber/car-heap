@@ -49,7 +49,7 @@ namespace car_heap.Controllers
             var vehicle = await repository.GetVehicleAsync(id);
 
             if(vehicle == null)
-                return BadRequest();
+                return NotFound();
             
             mapper.Map<SaveVehicleResource, Vehicle>(resouce, vehicle);
 
@@ -59,6 +59,19 @@ namespace car_heap.Controllers
             var mappedResult = mapper.Map<VehicleResource>(result);
 
             return Ok(mappedResult);
+        }
+
+        [HttpDelete("delete/{id}")]
+        public async Task<IActionResult> DeleteVehicle(int id)
+        {
+            var vehicle = await repository.GetVehicleAsync(id);
+            if(vehicle == null)
+                return NotFound();
+
+            repository.RemoveVehicle(vehicle);
+            await uow.CommitAsync();
+
+            return Ok(id);
         }
     }
 }
