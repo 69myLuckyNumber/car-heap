@@ -18,7 +18,7 @@ namespace car_heap.Controllers.Resources
 
         public KeyValuePairResource Model { get; set; }
 
-        public KeyValuePairResource Makes { get; set; }
+        public KeyValuePairResource Make { get; set; }
 
         public UserResource User { get; set; }
 

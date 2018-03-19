@@ -11,7 +11,7 @@ namespace car_heap.Controllers.Resources
 
         public string Comment { get; set; }
 
-        public Status Status { get; set; }
+        public KeyValuePairResource Status { get; set; }
 
         public DateTime DateRequested { get; set; }
 
