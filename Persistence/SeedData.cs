@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using car_heap.Core.Models;
 using Microsoft.EntityFrameworkCore;
@@ -9,17 +10,31 @@ namespace car_heap.Persistence
         public static async Task SeedAsync(AppDbContext context)
         {
             context.Database.Migrate();
-            if(await context.Features.CountAsync() == 0)
+            if (await context.Users.CountAsync()== 0)
+            {
+                var user1 = new User { Username = "username1", Password = "password1", 
+                    DateRegistered = DateTime.Now, Contact = new Contact {  FirstName = "Andrew", 
+                                                                            LastName = "Pocket" , 
+                                                                            Email = "email1@mail.ru",
+                                                                            Phone = "380911732442" } };
+                var user2 = new User { Username = "username2", Password = "password2", 
+                    DateRegistered = DateTime.Now, Contact = new Contact {  FirstName = "Andrew", 
+                                                                            Email = "email@mail.ru",
+                                                                            Phone = "380995552442" } };
+                await context.AddRangeAsync(user1, user2);
+                await context.SaveChangesAsync();
+            }
+            if (await context.Features.CountAsync()== 0)
             {
                 await context.AddRangeAsync(
-                    new Feature {Name = "Airbag", Description = "Such a nice airbag"},
+                    new Feature { Name = "Airbag", Description = "Such a nice airbag" },
                     new Feature { Name = "Antilock Bracking System", Description = "Bla bla bla" },
-                    new Feature { Name = "Tracking System", Description = "Some description"}
+                    new Feature { Name = "Tracking System", Description = "Some description" }
                 );
                 await context.SaveChangesAsync();
             }
 
-            if(await context.Makes.CountAsync() == 0)
+            if (await context.Makes.CountAsync()== 0)
             {
                 var make1 = new Make { Name = "BMW" };
                 var make2 = new Make { Name = "Audi" };
@@ -29,16 +44,16 @@ namespace car_heap.Persistence
                 var model2 = new Model { Name = "BMW-X8", Make = make1 };
                 var model3 = new Model { Name = "BMW-X9", Make = make1 };
 
-                var model4 = new Model { Name = "Audi 2000",    Make = make2 };
-                var model5 = new Model { Name = "Audi X8",      Make = make2 };
+                var model4 = new Model { Name = "Audi 2000", Make = make2 };
+                var model5 = new Model { Name = "Audi X8", Make = make2 };
                 var model6 = new Model { Name = "Audi Classic", Make = make2 };
 
-                var model7 = new Model { Name = "VAZ-3200",     Make = make3 };
-                var model8 = new Model { Name = "Lada Kalina",  Make = make3 };
-                var model9 = new Model { Name = "VAZ-9",        Make = make3 };
+                var model7 = new Model { Name = "VAZ-3200", Make = make3 };
+                var model8 = new Model { Name = "Lada Kalina", Make = make3 };
+                var model9 = new Model { Name = "VAZ-9", Make = make3 };
 
-                await context.Models.AddRangeAsync(model1, model2, model3, 
-                    model4, model5, model6, 
+                await context.Models.AddRangeAsync(model1, model2, model3,
+                    model4, model5, model6,
                     model7, model8, model9);
 
                 await context.SaveChangesAsync();
