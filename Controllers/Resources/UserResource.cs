@@ -6,7 +6,7 @@ namespace car_heap.Controllers.Resources
     {
         public string Id { get; set; }
 
-        public string Username { get; set; }
+        public string UserName { get; set; }
         
         public DateTime DateRegistered { get; set; }
 

@@ -7,17 +7,26 @@ namespace car_heap.Controllers.Resources
 {
     public class SaveUserResource
     {
-        public int Id { get; set; }
+        [Required]
+        [EmailAddress(ErrorMessage = "Invalid email address")]
+        public string Email { get; set; }
+
+        [Required]
+        [StringLength(32, MinimumLength = 6)]
+        public string Password { get; set; }
+
+        [StringLength(32, MinimumLength = 4)]
+        public string UserName { get; set; }
 
         [Required]
         [StringLength(32, MinimumLength = 4)]
-        public string Username { get; set; }
+        public string FirstName { get; set; }
 
-        [Required]
-        public string Password { get; set; }
+        [StringLength(32)]
+        public string LastName { get; set; }
 
-        public DateTime DateRegistered { get; set; }
-
-        public ContactResource Contact { get; set; }
+        [DataType(DataType.PhoneNumber)]
+        [RegularExpression("^[0-9]{12}$")]
+        public string Phone { get; set; }
     }
 }

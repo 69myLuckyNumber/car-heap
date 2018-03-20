@@ -37,7 +37,7 @@ namespace car_heap.Mappings
                     opts.MapFrom(o => new KeyValuePairResource { Id = o.StatusId, Name = o.Status.Name }));
             CreateMap<ApplicationUser, UserResource>()
                 .ForMember(us => us.Id, opts => opts.MapFrom(u => u.Id))
-                .ForMember(us => us.Username, opts => opts.MapFrom(u => u.UserName))
+                .ForMember(us => us.UserName, opts => opts.MapFrom(u => u.UserName))
                 .ForMember(us => us.DateRegistered, opts => opts.MapFrom(u => u.DateRegistered))
                 .ForMember(us => us.Contact, opts =>
                     opts.MapFrom(u => new ContactResource
@@ -58,29 +58,29 @@ namespace car_heap.Mappings
                     v.Orders.Select(o => new OrderResource
                     {
                         VehicleId = o.VehicleId, IdentityId = o.IdentityId,
-                        Comment = o.Comment, DateExpired = o.DateExpired, DateRequested = o.DateRequested,
-                        Status = new KeyValuePairResource { Id = o.StatusId, Name = o.Status.Name }
+                            Comment = o.Comment, DateExpired = o.DateExpired, DateRequested = o.DateRequested,
+                            Status = new KeyValuePairResource { Id = o.StatusId, Name = o.Status.Name }
                     })))
                 .ForMember(vr => vr.User, opts => opts.MapFrom(v => new UserResource
                 {
                     Id = v.IdentityId,
-                    Username = v.Identity.UserName,
-                    DateRegistered = v.Identity.DateRegistered,
-                    Contact = new ContactResource
-                    {
-                        Id = v.Identity.Contact.ContactId,
-                        FirstName = v.Identity.Contact.FirstName,
-                        LastName = v.Identity.Contact.LastName,
-                        Phone = v.Identity.Contact.Phone
-                    }
+                        UserName = v.Identity.UserName,
+                        DateRegistered = v.Identity.DateRegistered,
+                        Contact = new ContactResource
+                        {
+                            Id = v.Identity.Contact.ContactId,
+                                FirstName = v.Identity.Contact.FirstName,
+                                LastName = v.Identity.Contact.LastName,
+                                Phone = v.Identity.Contact.Phone
+                        }
                 }))
                 .ForMember(vr => vr.Features, opts =>
                     opts.MapFrom(v => v.Features.Select(f =>
                         new FeatureResource
                         {
                             Id = f.FeatureId,
-                            Name = f.Feature.Name,
-                            Description = f.Feature.Description
+                                Name = f.Feature.Name,
+                                Description = f.Feature.Description
                         })));
 
             // API Resources to Domain
@@ -104,6 +104,15 @@ namespace car_heap.Mappings
                     added.ForEach(i => v.Features.Add(i));
                 });
 
+            CreateMap<SaveUserResource, ApplicationUser>()
+                .ForMember(u => u.UserName, opts => opts.MapFrom(su => su.UserName ?? su.Email))
+                .ForMember(u => u.Email, opts => opts.MapFrom(su => su.Email))
+                .ForMember(u => u.Contact, opts => opts.MapFrom(su => new Contact
+                {
+                    Phone = su.Phone,
+                    FirstName = su.FirstName, 
+                    LastName = su.LastName
+                }));
         }
     }
 }
