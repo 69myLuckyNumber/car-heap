@@ -10,20 +10,6 @@ namespace car_heap.Persistence
         public static async Task SeedAsync(AppDbContext context)
         {
             context.Database.Migrate();
-            if (await context.Users.CountAsync()== 0)
-            {
-                var user1 = new User { Username = "username1", Password = "password1", 
-                    DateRegistered = DateTime.Now, Contact = new Contact {  FirstName = "Andrew", 
-                                                                            LastName = "Pocket" , 
-                                                                            Email = "email1@mail.ru",
-                                                                            Phone = "380911732442" } };
-                var user2 = new User { Username = "username2", Password = "password2", 
-                    DateRegistered = DateTime.Now, Contact = new Contact {  FirstName = "Andrew", 
-                                                                            Email = "email@mail.ru",
-                                                                            Phone = "380995552442" } };
-                await context.AddRangeAsync(user1, user2);
-                await context.SaveChangesAsync();
-            }
             if (await context.Features.CountAsync()== 0)
             {
                 await context.AddRangeAsync(

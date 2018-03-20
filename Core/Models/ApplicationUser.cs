@@ -2,20 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Identity;
 
 namespace car_heap.Core.Models
 {
-    public class User
+    public class ApplicationUser : IdentityUser
     {
-        public int UserId { get; set; }
-
-        [Required]
-        [StringLength(32, MinimumLength = 4)]
-        public string Username { get; set; }
-
-        [Required]
-        public string Password { get; set; }
-
         public DateTime DateRegistered { get; set; }
 
         public ICollection<Vehicle> OfferedVehicles { get; set; }
@@ -24,7 +16,7 @@ namespace car_heap.Core.Models
 
         public Contact Contact { get; set; }
 
-        public User()
+        public ApplicationUser()
         {
             OfferedVehicles = new Collection<Vehicle>();
             Orders          = new Collection<Order>();

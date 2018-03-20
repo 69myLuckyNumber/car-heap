@@ -12,9 +12,6 @@ namespace car_heap.Controllers.Resources
         [StringLength(255)]
         public string LastName { get; set; }
 
-        [StringLength(255)]
-        public string Email { get; set; }
-
         [StringLength(12, MinimumLength = 12)]
         public string Phone { get; set; }
     }

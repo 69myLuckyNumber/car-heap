@@ -5,7 +5,7 @@ namespace car_heap.Controllers.Resources
 {
     public class OrderResource
     {
-        public int UserId { get; set; }
+        public string IdentityId { get; set; }
 
         public int VehicleId { get; set; }
 

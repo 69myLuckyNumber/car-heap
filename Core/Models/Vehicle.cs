@@ -25,8 +25,8 @@ namespace car_heap.Core.Models
         public int ModelId { get; set; }
         public Model Model { get; set; }
 
-        public int UserId { get; set; }
-        public User User { get; set; }
+        public string IdentityId { get; set; }
+        public ApplicationUser Identity { get; set; }
 
         public Vehicle()
         {

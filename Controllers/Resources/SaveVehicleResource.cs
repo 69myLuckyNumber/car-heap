@@ -18,7 +18,7 @@ namespace car_heap.Controllers.Resources
 
         public int ModelId { get; set; }
 
-        public int UserId { get; set; }
+        public string IdentityId { get; set; }
 
         public ICollection<int> Features { get; set; }
 

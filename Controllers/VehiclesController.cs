@@ -11,13 +11,13 @@ using Microsoft.AspNetCore.Mvc;
 namespace car_heap.Controllers
 {
     [Route("api/vehicles")]
-    public class VehicleController : Controller
+    public class VehiclesController : Controller
     {
         private readonly IUnitOfWork uow;
         private readonly IMapper mapper;
         private readonly IVehicleRepository repository;
 
-        public VehicleController(IMapper mapper, IUnitOfWork uow, IVehicleRepository repository)
+        public VehiclesController(IMapper mapper, IUnitOfWork uow, IVehicleRepository repository)
         {
             this.repository = repository;
             this.mapper = mapper;

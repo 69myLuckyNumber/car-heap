@@ -7,12 +7,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace car_heap.Controllers
 {
-    public class FeatureController : Controller
+    public class FeaturesController : Controller
     {
         private readonly IMapper mapper;
         private readonly IFeatureRepository repository;
 
-        public FeatureController(IMapper mapper, IFeatureRepository repository)
+        public FeaturesController(IMapper mapper, IFeatureRepository repository)
         {
             this.repository = repository;
             this.mapper = mapper;

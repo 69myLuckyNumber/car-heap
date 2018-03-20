@@ -1,11 +1,11 @@
 using car_heap.Core.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace car_heap.Persistence
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : IdentityDbContext<ApplicationUser>
     {
-        public DbSet<User> Users { get; set; }
 
         public DbSet<Vehicle> Vehicles { get; set; }
 
@@ -17,34 +17,32 @@ namespace car_heap.Persistence
 
         public DbSet<Contact> Contacts { get; set; }
 
-        public DbSet<Integration> Integrations { get; set; }
-
         public DbSet<Feature> Features { get; set; }
 
-        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
-        {
-        }
+        public DbSet<Integration> Integrations { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder) 
-        {
+        public AppDbContext(DbContextOptions<AppDbContext> options): base(options)
+        { }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
             // One to one: User - Contact
-            modelBuilder.Entity<User>()
+            modelBuilder.Entity<ApplicationUser>()
                 .HasOne(u => u.Contact)
-                .WithOne(c => c.User)
-                .HasForeignKey<Contact>(c => c.UserId);
+                .WithOne(c => c.Identity)
+                .HasForeignKey<Contact>(c => c.IdentityId);
             // One to Many: User - Vehicles 
-            modelBuilder.Entity<User>()
+            modelBuilder.Entity<ApplicationUser>()
                 .HasMany(u => u.OfferedVehicles)
-                .WithOne(v => v.User);
+                .WithOne(v => v.Identity);
             // Many to Many: Vehicle - Feature 
             modelBuilder.Entity<Integration>()
                 .HasKey(i => new { i.FeatureId, i.VehicleId });
-                
+
             // Many to Many: User - Vehicle
             modelBuilder.Entity<Order>()
-                .HasKey(o => new { o.UserId, o.VehicleId });
-            
+                .HasKey(o => new { o.IdentityId, o.VehicleId });
+
             modelBuilder.Entity<Order>()
                 .HasOne(o => o.Vehicle)
                 .WithMany(v => v.Orders)
@@ -52,10 +50,12 @@ namespace car_heap.Persistence
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Order>()
-                .HasOne(o => o.User)
+                .HasOne(o => o.Identity)
                 .WithMany(v => v.Orders)
-                .HasForeignKey(o => o.UserId);
-            
+                .HasForeignKey(o => o.IdentityId);
+
+            base.OnModelCreating(modelBuilder);
+
         }
     }
 }

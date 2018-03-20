@@ -7,12 +7,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace car_heap.Controllers
 {
-    public class MakeController : Controller
+    public class MakesController : Controller
     {
         private readonly IMapper mapper;
         private readonly IMakeRepository repository;
 
-        public MakeController(IMapper mapper, IMakeRepository repository)
+        public MakesController(IMapper mapper, IMakeRepository repository)
         {
             this.repository = repository;
             this.mapper = mapper;

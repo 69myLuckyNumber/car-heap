@@ -4,11 +4,11 @@ namespace car_heap.Core.Models
 {
     public class Order
     {
-        public int UserId { get; set; }
+        public string IdentityId { get; set; }
 
         public int VehicleId { get; set; }
 
-        public User User { get; set; }
+        public ApplicationUser Identity { get; set; }
 
         public Vehicle Vehicle { get; set; }
 

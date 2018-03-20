@@ -31,7 +31,7 @@ namespace car_heap.Persistence.Repositories
                     .ThenInclude(vf => vf.Feature)
                 .Include(v => v.Orders)
                     .ThenInclude(o => o.Status)
-                .Include(v => v.User)
+                .Include(v => v.Identity)
                     .ThenInclude(v => v.Contact)
                 .ToListAsync();
         }
@@ -47,7 +47,7 @@ namespace car_heap.Persistence.Repositories
                     .ThenInclude(vf => vf.Feature)
                 .Include(v => v.Orders)
                     .ThenInclude(o => o.Status)
-                .Include(v => v.User)
+                .Include(v => v.Identity)
                     .ThenInclude(v => v.Contact)
                 .SingleOrDefaultAsync(v => v.VehicleId == id);
         }
