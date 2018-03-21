@@ -1,10 +1,15 @@
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using car_heap.Controllers.Resources;
+using car_heap.Core.Abstract;
 using car_heap.Core.Models;
 using car_heap.Infrastructure;
+using car_heap.Infrastructure.ConfigPocos;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 
 namespace car_heap.Controllers
 {
@@ -13,10 +18,13 @@ namespace car_heap.Controllers
     {
         private readonly IMapper mapper;
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly IJwtFactory jwtFactory;
 
-        public AccountsController(IMapper mapper, UserManager<ApplicationUser> userManager)
+        public AccountsController(IMapper mapper, UserManager<ApplicationUser> userManager,
+            IJwtFactory jwtFactory)
         {
             this.userManager = userManager;
+            this.jwtFactory = jwtFactory;
             this.mapper = mapper;
         }
 
@@ -29,10 +37,31 @@ namespace car_heap.Controllers
             var userIdentity = mapper.Map<ApplicationUser>(resource);
 
             var result = await userManager.CreateAsync(userIdentity, resource.Password);
-            if(!result.Succeeded)
+            if (!result.Succeeded)
                 return BadRequest(ModelState.AddIdentityResultErrors(result));
-            
+
             return Ok(mapper.Map<UserResource>(userIdentity));
         }
+
+        [HttpPost("[action]")]
+        public async Task<IActionResult> Login([FromBody] LoginUserResource credentials)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            //check credentials
+            var user = await userManager.FindByNameAsync(credentials.UserName);
+            if (user == null && !await userManager.CheckPasswordAsync(user, credentials.Password))
+            {
+                ModelState.AddModelError("login_failure", "Invalid credentials");
+                return BadRequest(ModelState);
+            }
+            
+            var jwt = await jwtFactory.GenerateJwtAsync(user.Id, credentials.UserName, 
+                credentials.Password, new JsonSerializerSettings { Formatting = Formatting.Indented });
+
+            return Ok(jwt); 
+        }
+
     }
 }
