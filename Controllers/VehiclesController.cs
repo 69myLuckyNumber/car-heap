@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace car_heap.Controllers
 {
-    [Route("api/vehicles")]
+    [Route("api/[controller]")]
     public class VehiclesController : Controller
     {
         private readonly IUnitOfWork uow;

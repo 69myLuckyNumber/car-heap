@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace car_heap.Controllers
 {
+    [Route("api/[controller]")]
     public class MakesController : Controller
     {
         private readonly IMapper mapper;
@@ -18,7 +19,7 @@ namespace car_heap.Controllers
             this.mapper = mapper;
         }
 
-        [HttpGet("api/makes")]
+        [HttpGet]
         public async Task<IEnumerable<MakeResource>> GetMakes()
         {
             var makes = await repository.GetMakesAsync();

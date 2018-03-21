@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace car_heap.Controllers
 {
+    [Route("api/[controller]")]
     public class FeaturesController : Controller
     {
         private readonly IMapper mapper;
@@ -18,7 +19,7 @@ namespace car_heap.Controllers
             this.mapper = mapper;
         }
 
-        [HttpGet("api/features")]
+        [HttpGet]
         public async Task<IEnumerable<FeatureResource>> GetFeatures()
         {
             var features = await repository.GetFeaturesAsync();

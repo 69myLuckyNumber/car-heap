@@ -19,7 +19,7 @@ namespace car_heap.Tools
         public JwtFactory(IOptions<JwtIssuerOptions> jwtOptions, JwtSecurityTokenHandler tokenHanlder)
         {
             this.tokenHanlder = tokenHanlder;
-            this.jwtOptions = jwtOptions.Value;
+            this.jwtOptions = jwtOptions.Value;  
         }
 
         public async Task<string> GenerateJwtAsync(string id, string username, string password, JsonSerializerSettings serializerSettings)
