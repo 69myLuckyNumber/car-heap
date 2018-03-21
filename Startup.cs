@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +10,8 @@ using car_heap.Core.Models;
 using car_heap.Infrastructure.ConfigPocos;
 using car_heap.Persistence;
 using car_heap.Persistence.Repositories;
+using car_heap.Tools;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -49,11 +52,48 @@ namespace car_heap
 
             var jwtAppSettingsOptions = Configuration.GetSection(nameof(JwtIssuerOptions));
 
-            services.Configure<JwtIssuerOptions>(opts => 
+            services.Configure<JwtIssuerOptions>(opts =>
             {
                 opts.Issuer = jwtAppSettingsOptions[nameof(JwtIssuerOptions.Issuer)];
                 opts.Audience = jwtAppSettingsOptions[nameof(JwtIssuerOptions.Audience)];
-                opts.SigningCredentials = new SigningCredentials(signingKey,SecurityAlgorithms.HmacSha256); 
+                opts.SigningCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
+            });
+            services.AddSingleton<JwtSecurityTokenHandler>();
+            services.AddSingleton<IJwtFactory, JwtFactory>();
+
+            // configuring JwtBearerAuthentication
+            var tokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidIssuer = jwtAppSettingsOptions[nameof(JwtIssuerOptions.Issuer)],
+
+                ValidateAudience = true,
+                ValidAudience = jwtAppSettingsOptions[nameof(JwtIssuerOptions.Audience)],
+
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = signingKey,
+
+                RequireExpirationTime = false,
+                ValidateLifetime = true,
+                ClockSkew = TimeSpan.Zero
+            };
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(configureOptions =>
+            {
+                configureOptions.ClaimsIssuer = jwtAppSettingsOptions[nameof(JwtIssuerOptions.Issuer)];
+                configureOptions.TokenValidationParameters = tokenValidationParameters;
+                configureOptions.SaveToken = true;
+            });
+
+            // api user claim policy
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("ApiUser", policy => 
+                    policy.RequireClaim(AppConstants.Strings.JwtClaimIdentifiers.Rol, 
+                        AppConstants.Strings.JwtClaims.ApiAccess));
             });
 
             // app identity
@@ -65,7 +105,6 @@ namespace car_heap
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
 
-        
             services.AddMvc();
         }
 
