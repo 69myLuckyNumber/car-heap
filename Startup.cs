@@ -61,6 +61,20 @@ namespace car_heap
             services.AddSingleton<JwtSecurityTokenHandler>();
             services.AddSingleton<IJwtFactory, JwtFactory>();
 
+            // add identity
+            var builder = services.AddIdentityCore<ApplicationUser>(o =>
+            {
+                // configure identity options
+                o.Password.RequireDigit = false;
+                o.Password.RequireLowercase = false;
+                o.Password.RequireUppercase = false;
+                o.Password.RequireNonAlphanumeric = false;
+                o.Password.RequiredLength = 6;
+            });
+            builder = new IdentityBuilder(builder.UserType, typeof(IdentityRole), builder.Services);
+            builder.AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
+
+
             // configuring JwtBearerAuthentication
             var tokenValidationParameters = new TokenValidationParameters
             {
@@ -91,20 +105,10 @@ namespace car_heap
             // api user claim policy
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("ApiUser", policy => 
-                    policy.RequireClaim(AppConstants.Strings.JwtClaimIdentifiers.Rol, 
+                options.AddPolicy("ApiUser", policy =>
+                    policy.RequireClaim(AppConstants.Strings.JwtClaimIdentifiers.Rol,
                         AppConstants.Strings.JwtClaims.ApiAccess));
             });
-
-            // app identity
-            services.AddIdentity<ApplicationUser, IdentityRole>(options =>
-                {
-                    options.Password.RequiredLength = 6;
-                    options.Password.RequireNonAlphanumeric = false;
-                })
-                .AddEntityFrameworkStores<AppDbContext>()
-                .AddDefaultTokenProviders();
-
             services.AddMvc();
         }
 
@@ -124,19 +128,17 @@ namespace car_heap
                 app.UseExceptionHandler("/Home/Error");
             }
 
+            app.UseAuthentication();
+
             app.UseStaticFiles();
 
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+            app.UseMvc();
 
-                routes.MapSpaFallbackRoute(
-                    name: "spa-fallback",
-                    defaults : new { controller = "Home", action = "Index" });
-            });
-
+            // For requests not going to WebAPI controllers
+            // app.MapWhen(context => !context.Request.Path.StartsWithSegments("/api"), branch =>
+            // {
+            //     branch.UseIdentity();
+            // });
             await SeedDataAsync(app);
 
         }
