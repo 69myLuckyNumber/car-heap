@@ -2,8 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
+using car_heap.Controllers.Resources.UserResources;
 
-namespace car_heap.Controllers.Resources
+namespace  car_heap.Controllers.Resources.VehicleResources
 {
     public class VehicleResource 
     {

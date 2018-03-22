@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace car_heap.Controllers.Resources
+namespace car_heap.Controllers.Resources.VehicleResources
 {
     public class SaveVehicleResource
     {
@@ -12,22 +12,20 @@ namespace car_heap.Controllers.Resources
         [StringLength(255)]
         public string Name { get; set; }
 
+        [Required]
         public bool IsRegistered { get; set; }
-
-        public DateTime LastUpdated { get; set; }
-
+        
+        [Required(ErrorMessage="Model is not specified")]
         public int ModelId { get; set; }
 
+        [Required]
         public string IdentityId { get; set; }
 
         public ICollection<int> Features { get; set; }
 
-        public ICollection<OrderResource> Orders { get; set; }
-
         public SaveVehicleResource()
         {
             Features = new Collection<int>();
-            Orders = new Collection<OrderResource>();
         }
     }
 }

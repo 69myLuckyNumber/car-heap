@@ -1,7 +1,7 @@
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
-using car_heap.Controllers.Resources;
+using car_heap.Controllers.Resources.UserResources;
 using car_heap.Core.Abstract;
 using car_heap.Core.Models;
 using car_heap.Infrastructure;

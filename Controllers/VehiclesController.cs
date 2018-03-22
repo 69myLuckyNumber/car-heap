@@ -3,49 +3,64 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using AutoMapper;
-using car_heap.Controllers.Resources;
+using car_heap.Controllers.Resources.VehicleResources;
 using car_heap.Core.Abstract;
 using car_heap.Core.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace car_heap.Controllers
 {
+    [Authorize(Policy = "ApiUser")]
     [Route("api/[controller]")]
     public class VehiclesController : Controller
     {
         private readonly IUnitOfWork uow;
         private readonly IMapper mapper;
         private readonly IVehicleRepository repository;
+        private readonly UserManager<ApplicationUser> userManager;
 
-        public VehiclesController(IMapper mapper, IUnitOfWork uow, IVehicleRepository repository)
+        public VehiclesController(IMapper mapper, IUnitOfWork uow, IVehicleRepository repository,
+            UserManager<ApplicationUser> userManager)
         {
+            this.userManager = userManager;
             this.repository = repository;
             this.mapper = mapper;
             this.uow = uow;
         }
-        
+
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IEnumerable<VehicleResource>> GetVehicles()
         {
             var vehicles = await repository.GetAllAsync();
             return mapper.Map<List<VehicleResource>>(vehicles);
         }
+
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetVehicle(int id)
         {
             var vehicle = await repository.GetAsync(id);
-            if(vehicle == null)
+            if (vehicle == null)
                 return NotFound();
             return Ok(mapper.Map<VehicleResource>(vehicle));
         }
+
         [HttpPost("create")]
         public async Task<IActionResult> CreateVehicle([FromBody] SaveVehicleResource resource)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
+            
+            //check whether valid user
+            var user = userManager.FindByIdAsync(resource.IdentityId);
+            if(user == null)
+                return NotFound();
 
             var vehicle = mapper.Map<Vehicle>(resource);
-            vehicle.LastUpdated = DateTime.Now; 
+            vehicle.LastUpdated = DateTime.Now;
             await repository.AddAsync(vehicle);
 
             await uow.CommitAsync();
@@ -56,17 +71,20 @@ namespace car_heap.Controllers
         }
 
         [HttpPut("update/{id}")]
-        public async Task<IActionResult> UpdateVehicle(int id,[FromBody] SaveVehicleResource resouce)
+        public async Task<IActionResult> UpdateVehicle(int id, [FromBody] SaveVehicleResource resource)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-            
+
             var vehicle = await repository.GetAsync(id);
 
-            if(vehicle == null)
+            if (vehicle == null)
                 return NotFound();
-            
-            mapper.Map<SaveVehicleResource, Vehicle>(resouce, vehicle);
+
+            if(vehicle.IdentityId != resource.IdentityId)
+                return NotFound();
+
+            mapper.Map<SaveVehicleResource, Vehicle>(resource, vehicle);
 
             await uow.CommitAsync();
 
@@ -80,7 +98,7 @@ namespace car_heap.Controllers
         public async Task<IActionResult> DeleteVehicle(int id)
         {
             var vehicle = await repository.GetAsync(id);
-            if(vehicle == null)
+            if (vehicle == null)
                 return NotFound();
 
             repository.Remove(vehicle);

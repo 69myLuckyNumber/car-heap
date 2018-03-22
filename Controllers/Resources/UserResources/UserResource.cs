@@ -1,6 +1,6 @@
 using System;
 
-namespace car_heap.Controllers.Resources
+namespace car_heap.Controllers.Resources.UserResources
 {
     public class UserResource
     {

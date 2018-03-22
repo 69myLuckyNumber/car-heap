@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace car_heap.Controllers.Resources
+namespace car_heap.Controllers.Resources.UserResources
 {
     public class SaveUserResource
     {
@@ -26,7 +26,7 @@ namespace car_heap.Controllers.Resources
         public string LastName { get; set; }
 
         [DataType(DataType.PhoneNumber)]
-        [RegularExpression("^[0-9]{12}$")]
+        [RegularExpression("^[0-9]{12}$", ErrorMessage = "Invalid phone number")]
         public string Phone { get; set; }
     }
 }

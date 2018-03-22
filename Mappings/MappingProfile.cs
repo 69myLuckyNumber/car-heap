@@ -1,6 +1,8 @@
 using System.Linq;
 using AutoMapper;
 using car_heap.Controllers.Resources;
+using car_heap.Controllers.Resources.UserResources;
+using car_heap.Controllers.Resources.VehicleResources;
 using car_heap.Core.Models;
 
 namespace car_heap.Mappings
