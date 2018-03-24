@@ -14,6 +14,7 @@ using car_heap.Tools;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.EntityFrameworkCore;
@@ -40,12 +41,17 @@ namespace car_heap
         public void ConfigureServices(IServiceCollection services)
         {
             // app dependencies
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddScoped<IVehicleRepository, VehicleRepository>();
             services.AddScoped<IFeatureRepository, FeatureRepository>();
             services.AddScoped<IMakeRepository, MakeRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddSingleton<IJwtFactory, JwtFactory>();
 
             services.AddAutoMapper();
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("Default")));
@@ -59,7 +65,6 @@ namespace car_heap
                 opts.SigningCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
             });
             services.AddSingleton<JwtSecurityTokenHandler>();
-            services.AddSingleton<IJwtFactory, JwtFactory>();
 
             // add identity
             var builder = services.AddIdentityCore<ApplicationUser>(o =>

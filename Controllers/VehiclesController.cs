@@ -6,6 +6,7 @@ using AutoMapper;
 using car_heap.Controllers.Resources.VehicleResources;
 using car_heap.Core.Abstract;
 using car_heap.Core.Models;
+using car_heap.Infrastructure.ConfigPocos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -18,14 +19,14 @@ namespace car_heap.Controllers
     {
         private readonly IUnitOfWork uow;
         private readonly IMapper mapper;
-        private readonly IVehicleRepository repository;
-        private readonly UserManager<ApplicationUser> userManager;
+        private readonly IVehicleRepository vehicleRepository;
+        private readonly IUserRepository userRepository;
 
         public VehiclesController(IMapper mapper, IUnitOfWork uow, IVehicleRepository repository,
-            UserManager<ApplicationUser> userManager)
+            IUserRepository userRepository)
         {
-            this.userManager = userManager;
-            this.repository = repository;
+            this.userRepository = userRepository;
+            this.vehicleRepository = repository;
             this.mapper = mapper;
             this.uow = uow;
         }
@@ -34,7 +35,7 @@ namespace car_heap.Controllers
         [AllowAnonymous]
         public async Task<IEnumerable<VehicleResource>> GetVehicles()
         {
-            var vehicles = await repository.GetAllAsync();
+            var vehicles = await vehicleRepository.GetAllAsync();
             return mapper.Map<List<VehicleResource>>(vehicles);
         }
 
@@ -42,53 +43,53 @@ namespace car_heap.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetVehicle(int id)
         {
-            var vehicle = await repository.GetAsync(id);
+            var vehicle = await vehicleRepository.GetAsync(id);
             if (vehicle == null)
                 return NotFound();
             return Ok(mapper.Map<VehicleResource>(vehicle));
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> CreateVehicle([FromBody] SaveVehicleResource resource)
+        public async Task<IActionResult> CreateVehicle([FromBody] SaveVehicleResource vehicleResource)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-            
-            //check whether valid user
-            var user = userManager.FindByIdAsync(resource.IdentityId);
-            if(user == null)
+
+            // check whether current user sent a request
+            var currentUser = await userRepository.GetCurrentUser();
+            if(currentUser.Id != vehicleResource.IdentityId)
                 return NotFound();
 
-            var vehicle = mapper.Map<Vehicle>(resource);
+            var vehicle = mapper.Map<Vehicle>(vehicleResource);
             vehicle.LastUpdated = DateTime.Now;
-            await repository.AddAsync(vehicle);
+            await vehicleRepository.AddAsync(vehicle);
 
             await uow.CommitAsync();
-            vehicle = await repository.GetAsync(vehicle.VehicleId);
+            vehicle = await vehicleRepository.GetAsync(vehicle.VehicleId);
 
             var vr = mapper.Map<VehicleResource>(vehicle);
             return Ok(vr);
         }
 
         [HttpPut("update/{id}")]
-        public async Task<IActionResult> UpdateVehicle(int id, [FromBody] SaveVehicleResource resource)
+        public async Task<IActionResult> UpdateVehicle(int id, [FromBody] SaveVehicleResource vehicleResource)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var vehicle = await repository.GetAsync(id);
-
+            var vehicle = await vehicleRepository.GetAsync(id);
             if (vehicle == null)
                 return NotFound();
 
-            if(vehicle.IdentityId != resource.IdentityId)
+            if (vehicle.IdentityId != vehicleResource.IdentityId)
                 return NotFound();
 
-            mapper.Map<SaveVehicleResource, Vehicle>(resource, vehicle);
+            mapper.Map(vehicleResource, vehicle);
+            vehicle.LastUpdated = DateTime.Now;
 
             await uow.CommitAsync();
 
-            var result = await repository.GetAsync(id);
+            var result = await vehicleRepository.GetAsync(id);
             var mappedResult = mapper.Map<VehicleResource>(result);
 
             return Ok(mappedResult);
@@ -97,11 +98,11 @@ namespace car_heap.Controllers
         [HttpDelete("delete/{id}")]
         public async Task<IActionResult> DeleteVehicle(int id)
         {
-            var vehicle = await repository.GetAsync(id);
+            var vehicle = await vehicleRepository.GetAsync(id);
             if (vehicle == null)
                 return NotFound();
 
-            repository.Remove(vehicle);
+            vehicleRepository.Remove(vehicle);
             await uow.CommitAsync();
 
             return Ok(id);

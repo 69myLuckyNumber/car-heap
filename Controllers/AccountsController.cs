@@ -1,3 +1,4 @@
+using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -29,18 +30,19 @@ namespace car_heap.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register([FromBody] SaveUserResource resource)
+        public async Task<IActionResult> Register([FromBody] SaveUserResource userResource)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var userIdentity = mapper.Map<ApplicationUser>(resource);
-
-            var result = await userManager.CreateAsync(userIdentity, resource.Password);
+            var userIdentity = mapper.Map<ApplicationUser>(userResource);
+            userIdentity.DateRegistered = DateTime.Now;
+            
+            var result = await userManager.CreateAsync(userIdentity, userResource.Password);
             if (!result.Succeeded)
                 return BadRequest(ModelState.AddIdentityResultErrors(result));
 
-            return Ok(mapper.Map<UserResource>(userIdentity));
+            return Ok(mapper.Map<PlainUserResource>(userIdentity));
         }
 
         [HttpPost("[action]")]

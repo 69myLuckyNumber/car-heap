@@ -2,7 +2,7 @@ using System;
 
 namespace car_heap.Controllers.Resources.UserResources
 {
-    public class UserResource
+    public class PlainUserResource
     {
         public string Id { get; set; }
 

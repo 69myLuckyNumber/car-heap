@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
+using car_heap.Controllers.Resources.OrderResources;
 using car_heap.Controllers.Resources.UserResources;
 
 namespace  car_heap.Controllers.Resources.VehicleResources
@@ -21,16 +22,16 @@ namespace  car_heap.Controllers.Resources.VehicleResources
 
         public KeyValuePairResource Make { get; set; }
 
-        public UserResource User { get; set; }
+        public PlainUserResource User { get; set; }
 
         public ICollection<FeatureResource> Features { get; set; }
 
-        public ICollection<OrderResource> Orders { get; set; }
+        public ICollection<PlainOrderResource> Orders { get; set; }
 
         public VehicleResource()
         {
             Features = new Collection<FeatureResource>();
-            Orders = new Collection<OrderResource>();
+            Orders = new Collection<PlainOrderResource>();
         }
     }
 }

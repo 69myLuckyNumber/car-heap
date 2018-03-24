@@ -13,5 +13,11 @@ namespace car_heap.Infrastructure
             }
             return dictionary;
         }
+
+        public static ModelStateDictionary AddError(this ModelStateDictionary dict, string key, string value)
+        {
+            dict.AddModelError(key, value);
+            return dict;
+        }
     }
 }

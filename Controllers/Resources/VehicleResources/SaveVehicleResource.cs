@@ -13,10 +13,10 @@ namespace car_heap.Controllers.Resources.VehicleResources
         public string Name { get; set; }
 
         [Required]
-        public bool IsRegistered { get; set; }
+        public bool? IsRegistered { get; set; }
         
         [Required(ErrorMessage="Model is not specified")]
-        public int ModelId { get; set; }
+        public int? ModelId { get; set; }
 
         [Required]
         public string IdentityId { get; set; }
