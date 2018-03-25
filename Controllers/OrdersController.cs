@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using AutoMapper;
 using car_heap.Controllers.Resources.OrderResources;
@@ -45,13 +46,41 @@ namespace car_heap.Controllers
             order = mapper.Map<Order>(orderResource);
 
             await repository.AddAsync(order);
-
+            order.DateRequested = DateTime.Now;
+            order.DateExpired = order.DateRequested.AddDays(7);
+            
             await uow.CommitAsync();
 
             order = await repository.GetAsync(orderResource.IdentityId, (int)orderResource.VehicleId);
 
             var result = mapper.Map<PlainOrderResource>(order);
 
+            return Ok(result);
+        }
+
+        [HttpPut("update")]
+        public async Task<IActionResult> UpdateOrder([FromBody] SaveOrderResource orderResource)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var currentUser = await userRepository.GetCurrentUser();
+            // check whether current user sent a request
+            if (currentUser.Id != orderResource.IdentityId)
+                return NotFound();
+
+            var order = await repository.GetAsync(orderResource.IdentityId, (int)orderResource.VehicleId);
+            // check whether is null or wrong vehicle
+            if(order == null)
+                return NotFound();
+
+            mapper.Map(orderResource, order);
+
+            await uow.CommitAsync();
+
+            order = await repository.GetAsync(orderResource.IdentityId, (int)orderResource.VehicleId);
+
+            var result = mapper.Map<PlainOrderResource>(order);
             return Ok(result);
         }
     }
