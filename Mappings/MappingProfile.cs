@@ -160,9 +160,7 @@ namespace car_heap.Mappings
                 .ForMember(o => o.IdentityId, opts => opts.MapFrom(os => os.IdentityId))
                 .ForMember(o => o.VehicleId, opts => opts.MapFrom(os => os.VehicleId))
                 .ForMember(o => o.StatusId, opts => opts.MapFrom(os => os.StatusId))
-                .ForMember(o => o.Comment, opts => opts.MapFrom(os => os.Comment))
-                .ForMember(o => o.DateExpired, opts => opts.MapFrom(os => os.DateExpired))
-                .ForMember(o => o.DateRequested, opts => opts.MapFrom(os => os.DateRequested));
+                .ForMember(o => o.Comment, opts => opts.MapFrom(os => os.Comment));
         }
     }
 }
