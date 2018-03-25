@@ -98,14 +98,16 @@ namespace car_heap.Controllers
         [HttpDelete("delete/{id}")]
         public async Task<IActionResult> DeleteVehicle(int id)
         {
+            var currentUser = await userRepository.GetCurrentUser();
+
             var vehicle = await vehicleRepository.GetAsync(id);
-            if (vehicle == null)
+            if (vehicle == null && vehicle.IdentityId != currentUser.Id) 
                 return NotFound();
 
             vehicleRepository.Remove(vehicle);
             await uow.CommitAsync();
 
-            return Ok(id);
+            return Ok(mapper.Map<SaveVehicleResource>(vehicle));
         }
     }
 }

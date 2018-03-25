@@ -125,6 +125,14 @@ namespace car_heap.Mappings
                                 Name = f.Feature.Name,
                                 Description = f.Feature.Description
                         })));
+            
+            CreateMap<Vehicle, SaveVehicleResource>()
+                .ForMember(sv => sv.Id, opts => opts.Ignore())
+                .ForMember(sv => sv.IdentityId, opts => opts.MapFrom(v => v.IdentityId))
+                .ForMember(sv => sv.ModelId, opts => opts.MapFrom(v => v.ModelId))
+                .ForMember(sv => sv.IsRegistered, opts => opts.MapFrom(v => v.IsRegistered))
+                .ForMember(sv => sv.Name, opts => opts.MapFrom(v => v.Name))
+                .ForMember(sv => sv.Features, opts => opts.MapFrom(v => v.Features.Select(f => f.FeatureId)));
 
             CreateMap<Order, SaveOrderResource>()
                 .ForMember(s => s.IdentityId, opts => opts.MapFrom(o => o.IdentityId))
