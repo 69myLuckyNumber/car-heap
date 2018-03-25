@@ -46,9 +46,7 @@ namespace car_heap.Controllers
             order = mapper.Map<Order>(orderResource);
 
             await repository.AddAsync(order);
-            order.DateRequested = DateTime.Now;
-            order.DateExpired = order.DateRequested.AddDays(7);
-            
+
             await uow.CommitAsync();
 
             order = await repository.GetAsync(orderResource.IdentityId, (int)orderResource.VehicleId);
@@ -82,6 +80,22 @@ namespace car_heap.Controllers
 
             var result = mapper.Map<PlainOrderResource>(order);
             return Ok(result);
+        }
+
+        [HttpDelete("delete/{id}")]
+        public async Task<IActionResult> DeleteOrder(int id)
+        {
+            var currentUser = await userRepository.GetCurrentUser();
+
+            var order = await repository.GetAsync(currentUser.Id, id);
+            if(order == null)
+                return BadRequest(ModelState.AddError("invalid_request", "Order is already deleted"));
+
+            repository.Remove(order);
+
+            await uow.CommitAsync();
+
+            return Ok(mapper.Map<SaveOrderResource>(order));
         }
     }
 }

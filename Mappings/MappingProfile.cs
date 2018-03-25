@@ -126,6 +126,14 @@ namespace car_heap.Mappings
                                 Description = f.Feature.Description
                         })));
 
+            CreateMap<Order, SaveOrderResource>()
+                .ForMember(s => s.IdentityId, opts => opts.MapFrom(o => o.IdentityId))
+                .ForMember(s => s.StatusId, opts => opts.MapFrom(o => o.StatusId))
+                .ForMember(s => s.VehicleId, opts => opts.MapFrom(o => o.VehicleId))
+                .ForMember(s => s.Comment, opts => opts.MapFrom(o => o.Comment))
+                .ForMember(s => s.DateRequested, opts => opts.MapFrom(o => o.DateRequested))
+                .ForMember(s => s.DateExpired, opts => opts.MapFrom(o => o.DateExpired));
+
             // API Resources to Domain
             CreateMap<SaveVehicleResource, Vehicle>()
                 .ForMember(v => v.VehicleId, opts => opts.Ignore())
@@ -160,7 +168,9 @@ namespace car_heap.Mappings
                 .ForMember(o => o.IdentityId, opts => opts.MapFrom(os => os.IdentityId))
                 .ForMember(o => o.VehicleId, opts => opts.MapFrom(os => os.VehicleId))
                 .ForMember(o => o.StatusId, opts => opts.MapFrom(os => os.StatusId))
-                .ForMember(o => o.Comment, opts => opts.MapFrom(os => os.Comment));
+                .ForMember(o => o.Comment, opts => opts.MapFrom(os => os.Comment))
+                .ForMember(o => o.DateRequested, opts => opts.MapFrom(os => os.DateRequested))
+                .ForMember(o => o.DateExpired, opts => opts.MapFrom(os => os.DateExpired));
         }
     }
 }

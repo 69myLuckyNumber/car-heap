@@ -34,5 +34,10 @@ namespace car_heap.Persistence.Repositories
                 .Include(o => o.Status)
                 .SingleOrDefaultAsync(o => o.IdentityId == userId && o.VehicleId == vehicleId);
         }
+
+        public void Remove(Order order)
+        {
+            context.Remove(order);
+        }
     }
 }

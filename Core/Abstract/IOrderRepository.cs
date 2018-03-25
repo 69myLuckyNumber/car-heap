@@ -8,5 +8,7 @@ namespace car_heap.Core.Abstract
          Task AddAsync(Order order);
 
          Task<Order> GetAsync(string userId, int vehicleId, bool includeRelated = true);
+
+         void Remove(Order order);
     }
 }
