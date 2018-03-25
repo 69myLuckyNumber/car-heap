@@ -49,7 +49,7 @@ namespace car_heap.Controllers
             return Ok(mapper.Map<VehicleResource>(vehicle));
         }
 
-        [HttpPost("create")]
+        [HttpPost]
         public async Task<IActionResult> CreateVehicle([FromBody] SaveVehicleResource vehicleResource)
         {
             if (!ModelState.IsValid)
