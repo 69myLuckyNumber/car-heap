@@ -19,7 +19,7 @@ namespace car_heap.Controllers.Resources.UserResources
         public string UserName { get; set; }
 
         [Required]
-        [StringLength(32, MinimumLength = 4)]
+        [StringLength(32)]
         public string FirstName { get; set; }
 
         [StringLength(32)]
