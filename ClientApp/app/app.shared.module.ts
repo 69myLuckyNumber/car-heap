@@ -5,10 +5,12 @@ import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './components/app/app.component';
+import { SignupFormComponent } from './components/signup-form/signup-form.component';
 
 @NgModule({
     declarations: [
-        AppComponent
+        AppComponent,
+        SignupFormComponent
     ],
     imports: [
         CommonModule,

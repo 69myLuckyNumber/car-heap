@@ -137,7 +137,17 @@ namespace car_heap
 
             app.UseStaticFiles();
 
-            app.UseMvc();
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller=Home}/{action=Index}/{id?}");
+
+                routes.MapSpaFallbackRoute(
+                    name: "spa-fallback",
+                    defaults: new { controller = "Home", action = "Index" });
+            });
+            
 
             // For requests not going to WebAPI controllers
             // app.MapWhen(context => !context.Request.Path.StartsWithSegments("/api"), branch =>
