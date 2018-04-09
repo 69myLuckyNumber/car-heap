@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, ValidatorFn } from '@angular/forms';
 import { UsernameValidators } from '../../common/validators/username.validators';
 import { AuthService } from '../../services/auth.service';
+import { PasswordValidators } from '../../common/validators/password.validators';
 
 @Component({
 	selector: 'app-signup-form',
@@ -11,7 +12,7 @@ import { AuthService } from '../../services/auth.service';
 export class SignupFormComponent {
 	constructor(private authService: AuthService){}
 
-	form = new FormGroup({
+	form: FormGroup = new FormGroup({
 		firstName: new FormControl('', [
 			Validators.required,
 			Validators.maxLength(32)
@@ -29,15 +30,16 @@ export class SignupFormComponent {
 			Validators.email
 		],
 		UsernameValidators.shouldBeUnique(this.authService)),
+
 		password: new FormControl('', [
 			Validators.minLength(6),
 			Validators.maxLength(32),
-			Validators.required
+			Validators.required,
+			PasswordValidators.matchPassword
 		]),
 		passwordAgain: new FormControl('', [
-			Validators.minLength(6),
-			Validators.maxLength(32),
-			Validators.required
+			Validators.required,
+			PasswordValidators.matchPassword
 		]),
 		phone: new FormControl('', [
 			Validators.pattern("^[0-9]{12}$")
@@ -59,7 +61,12 @@ export class SignupFormComponent {
 	get passwordControl() {
 		return this.form.get('password');
 	}
+	get passwordAgainControl() {
+		return this.form.get('passwordAgain');
+	}
+
 	get phoneControl() {
 		return this.form.get('phone');
 	}
 }
+

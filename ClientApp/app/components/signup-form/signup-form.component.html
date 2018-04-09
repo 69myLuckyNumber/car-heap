@@ -35,16 +35,28 @@
   <div class="form-group">
       <label for="password">Password</label>
       <input formControlName="password" type="text" class="form-control" id="password">
-      <div class="alert alert-danger" *ngIf="passwordControl.touched && passwordControl.invalid">
+      <div class="alert alert-danger" *ngIf="passwordControl.touched && passwordControl.invalid && passwordAgainControl.touched && passwordAgainControl.invalid">
           <div *ngIf="passwordControl.errors.required">Password is required.</div>
           <div *ngIf="passwordControl.errors.minlength || passwordControl.errors.maxlength">
               Password should be between 6 and 32 characters long.
             </div>
+            
+                <div *ngIf="passwordControl.errors.mismatch">Passwords do not match.</div>
+        
       </div>
   </div>
   <div class="form-group">
       <label for="passwordAgain">Password Again</label>
       <input formControlName="passwordAgain" type="text" class="form-control" id="passwordAgain">
+      <div class="alert alert-danger" *ngIf="passwordAgainControl.touched && passwordAgainControl.invalid && passwordControl.touched && passwordControl.invalid">
+            
+        <div *ngIf="passwordAgainControl.errors.minlength || passwordAgainControl.errors.maxlength">
+            Password should be between 6 and 32 characters long.
+        </div>
+        
+        <div *ngIf="passwordAgainControl.errors.mismatch">Passwords do not match.</div>
+        
+    </div>
   </div>
   <div class="form-group">
       <label for="phone">Phone number</label>
