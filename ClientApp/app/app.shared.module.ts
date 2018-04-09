@@ -6,6 +6,8 @@ import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './components/app/app.component';
 import { SignupFormComponent } from './components/signup-form/signup-form.component';
+import { AuthService } from './services/auth.service';
+import { UsernameValidators } from './common/validators/username.validators';
 
 @NgModule({
     declarations: [
@@ -24,6 +26,9 @@ import { SignupFormComponent } from './components/signup-form/signup-form.compon
             // { path: 'fetch-data', component: FetchDataComponent },
             // { path: '**', redirectTo: 'home' }
         ])
+    ],
+    providers: [
+        AuthService
     ]
 })
 export class AppModuleShared {

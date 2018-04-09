@@ -29,6 +29,15 @@ namespace car_heap.Controllers
             this.mapper = mapper;
         }
 
+        [HttpGet("{username}")]
+        public async Task<IActionResult> GetAccount(string username)
+        {
+            var user = await userManager.FindByNameAsync(username);
+            if(user != null)
+                return Ok(mapper.Map<PlainUserResource>(user));
+            return NotFound();
+        }
+
         [HttpPost]
         public async Task<IActionResult> Register([FromBody] SaveUserResource userResource)
         {
