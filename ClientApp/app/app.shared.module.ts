@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, ErrorHandler } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
@@ -8,6 +8,7 @@ import { AppComponent } from './components/app/app.component';
 import { SignupFormComponent } from './components/signup-form/signup-form.component';
 import { AuthService } from './services/auth.service';
 import { UsernameValidators } from './common/validators/username.validators';
+import { AppErrorHandler } from './common/errors/app-error-handler';
 
 @NgModule({
     declarations: [
@@ -28,7 +29,8 @@ import { UsernameValidators } from './common/validators/username.validators';
         ])
     ],
     providers: [
-        AuthService
+        AuthService,
+        {provide: ErrorHandler, useClass: AppErrorHandler}
     ]
 })
 export class AppModuleShared {

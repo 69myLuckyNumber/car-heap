@@ -24,6 +24,8 @@ export class UsernameValidators {
                             (error: AppError) => {
                                 if(error instanceof NotFoundError) {
                                     resolve(null);
+                                } else {
+                                    throw error;
                                 }
                             });
                 }
