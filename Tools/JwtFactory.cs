@@ -32,7 +32,8 @@ namespace car_heap.Tools
             {
                 id = identity.Claims.Single(c => c.Type == "id").Value,
                 auth_token = authToken,
-                expires_in = expiresIn
+                expires_in = expiresIn,
+                username = username
             };
 
             return JsonConvert.SerializeObject(jwt, serializerSettings);

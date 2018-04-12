@@ -15,6 +15,11 @@ export class PasswordValidators {
                 if (password !== confirmPassword) {
                     return { mismatch: true };
                 } else {
+                    if(passwordControl.getError('minlength') || passwordControl.getError('maxlength')) {
+                        return null;
+                    }
+                    passwordControl.setErrors(null);
+                    confirmPasswordControl.setErrors(null);
                     
                     return null;
                 }
@@ -24,8 +29,3 @@ export class PasswordValidators {
         return null;
     }
 }
-
-    // static passwordMatchValidator(g: FormGroup): ValidationErrors | null {
-    //     return g.get('password')!.value === g.get('passwordAgain')!.value
-    //        ? null : {'mismatch': true};
-    //  }

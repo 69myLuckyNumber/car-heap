@@ -1,5 +1,5 @@
 import { AbstractControl, ValidationErrors, ValidatorFn, AsyncValidatorFn } from "@angular/forms";
-import { AuthService } from "../../services/auth.service";
+import { AccountService } from "../../services/account.service";
 import { Observable } from "rxjs/Observable";
 import { AppError } from "../errors/app-error";
 import { NotFoundError } from "../errors/not-found-error";
@@ -12,7 +12,7 @@ export class UsernameValidators {
         return null;
     }
     
-    static shouldBeUnique(authService: AuthService) : AsyncValidatorFn {
+    static shouldBeUnique(authService: AccountService) : AsyncValidatorFn {
         return (control: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
             return new Promise((resolve, reject)=> {
                 if((control.value as string) === '')

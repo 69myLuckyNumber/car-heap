@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, ValidatorFn } from '@angular/forms';
 import { UsernameValidators } from '../../common/validators/username.validators';
-import { AuthService } from '../../services/auth.service';
+import { AccountService } from '../../services/account.service';
 import { PasswordValidators } from '../../common/validators/password.validators';
+import { BadRequestError } from '../../common/errors/bad-request-error';
+import { AppError } from '../../common/errors/app-error';
+import { Router } from '@angular/router';
 
 @Component({
 	selector: 'app-signup-form',
@@ -10,7 +13,7 @@ import { PasswordValidators } from '../../common/validators/password.validators'
 	styleUrls: ['./signup-form.component.css']
 })
 export class SignupFormComponent {
-	constructor(private authService: AuthService){}
+	constructor(private accountService: AccountService, private router: Router){}
 
 	form: FormGroup = new FormGroup({
 		firstName: new FormControl('', [
@@ -21,15 +24,16 @@ export class SignupFormComponent {
 			Validators.maxLength(32)
 		]),
 		username: new FormControl('', [
+			Validators.required,
 			Validators.minLength(4),
 			Validators.maxLength(32),
 			UsernameValidators.cannotContainSpace
 		],
-		UsernameValidators.shouldBeUnique(this.authService)),
+		UsernameValidators.shouldBeUnique(this.accountService)),
 		email: new FormControl('', [
 			Validators.email
 		],
-		UsernameValidators.shouldBeUnique(this.authService)),
+		UsernameValidators.shouldBeUnique(this.accountService)),
 
 		password: new FormControl('', [
 			Validators.minLength(6),
@@ -45,6 +49,26 @@ export class SignupFormComponent {
 			Validators.pattern("^[0-9]{12}$")
 		])
 	});
+
+	onSubmit() {
+		if(this.form.valid) {
+			this.accountService
+				.register(this.form.value)
+				.subscribe(
+					res => {
+						if(res)
+							this.router.navigate(['/login']);
+					},
+					(error: AppError) => {
+						console.log(error);
+						if (error instanceof BadRequestError)
+							this.form.setErrors({register_failure: "Error occurred. Enter valid data."});
+					}
+				);
+		}
+		else this.form.setErrors({register_failure: "Error occurred. Enter valid data."});
+	}
+
 
 	get usernameControl() {
 		return this.form.get('username');

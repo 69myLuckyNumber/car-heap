@@ -53,7 +53,8 @@ namespace car_heap.Mappings
                             Id = o.Identity.Contact.ContactId,
                                 FirstName = o.Identity.Contact.FirstName,
                                 LastName = o.Identity.Contact.LastName,
-                                Phone = o.Identity.Contact.Phone
+                                Phone = o.Identity.Contact.Phone,
+                                Email = o.Identity.Email
                         }
                 }))
                 .ForMember(os => os.Status, opts =>
@@ -66,7 +67,8 @@ namespace car_heap.Mappings
                     opts.MapFrom(u => new ContactResource
                     {
                         Id = u.Contact.ContactId, FirstName = u.Contact.FirstName,
-                            LastName = u.Contact.LastName, Phone = u.Contact.Phone
+                            LastName = u.Contact.LastName, Phone = u.Contact.Phone,
+                            Email = u.Email
                     }));
             CreateMap<Vehicle, VehicleResource>()
                 .ForMember(vr => vr.Id, opts => opts.MapFrom(v => v.VehicleId))
@@ -98,7 +100,8 @@ namespace car_heap.Mappings
                                         Id = v.Identity.Contact.ContactId,
                                             FirstName = v.Identity.Contact.FirstName,
                                             LastName = v.Identity.Contact.LastName,
-                                            Phone = v.Identity.Contact.Phone
+                                            Phone = v.Identity.Contact.Phone,
+                                            Email = v.Identity.Email
                                     }
                             },
                             Comment = o.Comment, DateExpired = o.DateExpired, DateRequested = o.DateRequested,
@@ -114,7 +117,8 @@ namespace car_heap.Mappings
                             Id = v.Identity.Contact.ContactId,
                                 FirstName = v.Identity.Contact.FirstName,
                                 LastName = v.Identity.Contact.LastName,
-                                Phone = v.Identity.Contact.Phone
+                                Phone = v.Identity.Contact.Phone,
+                                Email = v.Identity.Email
                         }
                 }))
                 .ForMember(vr => vr.Features, opts =>

@@ -30,14 +30,21 @@ namespace car_heap.Controllers
         }
 
         [HttpGet("{username}")]
-        public async Task<IActionResult> GetAccount(string username)
+        public async Task<IActionResult> GetAccountByName(string username)
         {
             var user = await userManager.FindByNameAsync(username);
             if(user != null)
                 return Ok(mapper.Map<PlainUserResource>(user));
             return NotFound();
         }
-
+        [HttpGet("id/{id}")]
+        public async Task<IActionResult> GetAccountById(string id)
+        {
+            var user = await userManager.FindByIdAsync(id);
+            if(user != null)
+                return Ok(mapper.Map<PlainUserResource>(user));
+            return NotFound();
+        }
         [HttpPost]
         public async Task<IActionResult> Register([FromBody] SaveUserResource userResource)
         {

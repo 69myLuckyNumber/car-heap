@@ -15,6 +15,7 @@ namespace car_heap.Controllers.Resources.UserResources
         [StringLength(32, MinimumLength = 6)]
         public string Password { get; set; }
 
+        [Required]
         [StringLength(32, MinimumLength = 4)]
         public string UserName { get; set; }
 

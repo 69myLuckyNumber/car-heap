@@ -1,0 +1,24 @@
+<nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" routerLink="">CHeap</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li routerLinkActive="active current">
+        <a routerLink="/home">Home</a>
+      </li>
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+      <p *ngIf="accountService.isLoggedIn()" class="navbar-text navbar-right">Signed in as {{ accountService.currentUser.sub }}</p>
+      <li *ngIf="!accountService.isLoggedIn()" routerLinkActive="active current">
+        <a routerLink="/register">Sign up</a>
+      </li>
+      <li *ngIf="!accountService.isLoggedIn()" routerLinkActive="active current">
+        <a routerLink="/login">Sign in</a>
+      </li>
+      <li *ngIf="accountService.isLoggedIn()" routerLinkActive="active current">
+          <a (click)="accountService.logout()" style="cursor: pointer">Logout</a>
+        </li>
+    </ul>
+  </div>
+</nav>

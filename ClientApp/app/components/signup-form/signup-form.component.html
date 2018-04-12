@@ -1,69 +1,87 @@
-<form [formGroup]="form">
-  <div class="form-group">
-    <label for="firstName">First name</label>
-    <input formControlName="firstName" type="text" class="form-control" id="firstName">
-    <div class="alert alert-danger" *ngIf="firstNameControl.touched && firstNameControl.invalid">
-      <div *ngIf="firstNameControl.errors.required">First name is required.</div>
-      <div *ngIf="firstNameControl.errors.maxlength">First name is too long.</div>
-    </div>
-  </div>
-  <div class="form-group">
-    <label for="lastName">Last name</label>
-    <input formControlName="lastName" type="text" class="form-control" id="lastName">
-    <div class="alert alert-danger" *ngIf="lastNameControl.touched && lastNameControl.invalid">
-        <div *ngIf="lastNameControl.errors.maxlength">First name is too long.</div>
-    </div>
-  </div>
-  <div class="form-group">
-    <label for="username">User name</label>
-    <input formControlName="username" type="text" class="form-control" id="username">
-    <div class="alert alert-danger" *ngIf="usernameControl.touched && usernameControl.invalid">
-        <div *ngIf="usernameControl.errors.maxlength">User name is too long.</div>
-        <div *ngIf="usernameControl.errors.minlength">User name is too short.</div>
-        <div *ngIf="usernameControl.errors.cannotContainSpace">User name cannot contain space.</div>
-        <div *ngIf="usernameControl.errors.shouldBeUnique">Already exists.</div>
-    </div>
-  </div>
-  <div class="form-group">
-    <label for="email">Email</label>
-    <input formControlName="email" type="text" class="form-control" id="email">
-    <div class="alert alert-danger" *ngIf="emailControl.touched && emailControl.invalid">
-        <div *ngIf="emailControl.errors.email">Invalid email address.</div>
-        <div *ngIf="emailControl.errors.shouldBeUnique">Invalid email address.</div>
-    </div>
-  </div>
-  <div class="form-group">
-      <label for="password">Password</label>
-      <input formControlName="password" type="text" class="form-control" id="password">
-      <div class="alert alert-danger" *ngIf="passwordControl.touched && passwordControl.invalid && passwordAgainControl.touched && passwordAgainControl.invalid">
-          <div *ngIf="passwordControl.errors.required">Password is required.</div>
-          <div *ngIf="passwordControl.errors.minlength || passwordControl.errors.maxlength">
-              Password should be between 6 and 32 characters long.
-            </div>
-            
-                <div *ngIf="passwordControl.errors.mismatch">Passwords do not match.</div>
-        
-      </div>
-  </div>
-  <div class="form-group">
-      <label for="passwordAgain">Password Again</label>
-      <input formControlName="passwordAgain" type="text" class="form-control" id="passwordAgain">
-      <div class="alert alert-danger" *ngIf="passwordAgainControl.touched && passwordAgainControl.invalid && passwordControl.touched && passwordControl.invalid">
-            
-        <div *ngIf="passwordAgainControl.errors.minlength || passwordAgainControl.errors.maxlength">
-            Password should be between 6 and 32 characters long.
-        </div>
-        
-        <div *ngIf="passwordAgainControl.errors.mismatch">Passwords do not match.</div>
-        
-    </div>
-  </div>
-  <div class="form-group">
-      <label for="phone">Phone number</label>
-      <input formControlName="phone" type="text" class="form-control" id="phone">
-      <div class="alert alert-danger" *ngIf="phoneControl.touched && phoneControl.invalid">
-          <div *ngIf="phoneControl.errors.pattern">Phone number should be 12 digits long.</div>
-      </div>
-  </div>
-  <button class="btn btn-primary" type="submit">Sign Up</button>
-</form>
+<div class="container">
+	<div class="row">
+		<div class="panel panel-default">
+			<div class="panel-body">
+				<form [formGroup]="form" (ngSubmit)="onSubmit()">
+					<div class="form-group">
+						<h2>Create an account</h2>
+					</div>
+					<div class="alert alert-danger" *ngIf="form.errors">
+						<div *ngIf="form.errors.register_failure">{{ form.errors.register_failure }}</div>
+					</div>
+					<div class="form-group">
+						<label for="firstName">First name</label>
+						<input formControlName="firstName" type="text" class="form-control" id="firstName">
+						<div class="alert alert-danger" *ngIf="firstNameControl.touched && firstNameControl.invalid">
+							<div *ngIf="firstNameControl.errors.required">First name is required.</div>
+							<div *ngIf="firstNameControl.errors.maxlength">First name is too long.</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="lastName">Last name</label>
+						<input formControlName="lastName" type="text" class="form-control" id="lastName">
+						<div class="alert alert-danger" *ngIf="lastNameControl.touched && lastNameControl.invalid">
+							<div *ngIf="lastNameControl.errors.maxlength">First name is too long.</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="username">User name</label>
+						<input formControlName="username" type="text" class="form-control" id="username">
+						<div class="alert alert-danger" *ngIf="usernameControl.touched && usernameControl.invalid">
+							<div *ngIf="usernameControl.errors.maxlength">User name is too long.</div>
+							<div *ngIf="usernameControl.errors.minlength">User name is too short.</div>
+							<div *ngIf="usernameControl.errors.required">User name is required.</div>
+							<div *ngIf="usernameControl.errors.cannotContainSpace">User name cannot contain space.</div>
+							<div *ngIf="usernameControl.errors.shouldBeUnique">Already exists.</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="email">Email</label>
+						<input formControlName="email" type="text" class="form-control" id="email">
+						<div class="alert alert-danger" *ngIf="emailControl.touched && emailControl.invalid">
+							<div *ngIf="emailControl.errors.email">Invalid email address.</div>
+							<div *ngIf="emailControl.errors.shouldBeUnique">Invalid email address.</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="password">Password</label>
+						<input formControlName="password" type="password" class="form-control" id="password">
+						<div class="alert alert-danger" *ngIf="(passwordControl.touched && passwordControl.invalid)">
+							<div *ngIf="passwordControl.errors.required">Password is required.</div>
+							<div *ngIf="passwordControl.errors.minlength || passwordControl.errors.maxlength">
+								Password should be between 6 and 32 characters long.
+							</div>
+							<div *ngIf="passwordControl.errors.mismatch">Passwords do not match.</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="passwordAgain">Password Again</label>
+						<input formControlName="passwordAgain" type="password" class="form-control" id="passwordAgain">
+						<div class="alert alert-danger" *ngIf="(passwordAgainControl.touched && passwordAgainControl.invalid)">
+
+							<div *ngIf="passwordAgainControl.errors.minlength || passwordAgainControl.errors.maxlength">
+								Password should be between 6 and 32 characters long.
+							</div>
+							<div *ngIf="passwordAgainControl.errors.required">Password is required.</div>
+							<div *ngIf="passwordAgainControl.errors.mismatch">Passwords do not match.</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="phone">Phone number</label>
+						<input formControlName="phone" type="text" class="form-control" id="phone">
+						<div class="alert alert-danger" *ngIf="phoneControl.touched && phoneControl.invalid">
+							<div *ngIf="phoneControl.errors.pattern">Phone number should be 12 digits long.</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<button id="signupSubmit" type="submit" class="btn btn-info btn-block">Create account</button>
+					</div>
+					<hr>
+					<p>Already have an account?
+						<a routerLink="/login">Sign in</a>
+					</p>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
