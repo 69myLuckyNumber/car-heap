@@ -13,6 +13,7 @@ namespace car_heap.Mappings
         public MappingProfile()
         {
             // Domain to API Resources
+            CreateMap<Photo, PhotoResource>();
             CreateMap<Make, MakeResource>()
                 .ForMember(ms => ms.Id, opts => opts.MapFrom(m => m.MakeId))
                 .ForMember(ms => ms.Name, opts => opts.MapFrom(m => m.Name))

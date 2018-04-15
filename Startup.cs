@@ -41,6 +41,10 @@ namespace car_heap
         public void ConfigureServices(IServiceCollection services)
         {
             // app dependencies
+
+            services.AddScoped<IPhotoRepository, PhotoRepository>();
+            services.AddTransient<IPhotoService, PhotoService>();
+            services.AddTransient<IPhotoStorage, FileSystemPhotoStorage>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddScoped<IVehicleRepository, VehicleRepository>();
@@ -52,6 +56,8 @@ namespace car_heap
             services.AddAutoMapper();
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+            services.Configure<PhotoSettings>(Configuration.GetSection("PhotoSettings"));
 
             services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("Default")));
@@ -78,7 +84,6 @@ namespace car_heap
             });
             builder = new IdentityBuilder(builder.UserType, typeof(IdentityRole), builder.Services);
             builder.AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
-
 
             // configuring JwtBearerAuthentication
             var tokenValidationParameters = new TokenValidationParameters
@@ -145,9 +150,8 @@ namespace car_heap
 
                 routes.MapSpaFallbackRoute(
                     name: "spa-fallback",
-                    defaults: new { controller = "Home", action = "Index" });
+                    defaults : new { controller = "Home", action = "Index" });
             });
-            
 
             // For requests not going to WebAPI controllers
             // app.MapWhen(context => !context.Request.Path.StartsWithSegments("/api"), branch =>
