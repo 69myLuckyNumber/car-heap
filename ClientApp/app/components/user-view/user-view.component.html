@@ -1,0 +1,21 @@
+<div class="row">
+    <div class="col-md-4 col-md-offset-4">
+  
+      <div *ngIf="user" class="panel panel-info">
+        <div class="panel-heading">
+          {{ user.userName }}
+        </div>
+        <div class="panel-body">
+  
+          <h2>Info</h2>
+          <p>User name: <b>{{ user.userName }}</b></p>
+          <p>First name: <b>{{ user.contact.firstName }}</b></p>
+          <p *ngIf="user.contact.lastName">First name: <b>{{ user.contact.lastName }}</b></p>
+          <p>Email: <b>{{ user.contact.email }}</b></p>
+          <p *ngIf="user.contact.phone">Phone number: <b>{{ user.contact.phone }}</b></p>
+        </div>
+  
+      </div>
+  
+    </div>
+  </div>

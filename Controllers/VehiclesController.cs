@@ -31,12 +31,15 @@ namespace car_heap.Controllers
             this.uow = uow;
         }
 
-        [HttpGet]
         [AllowAnonymous]
-        public async Task<IEnumerable<VehicleResource>> GetVehicles()
+        [HttpGet]
+        public async Task<ActionResult> GetVehicles()
         {
             var vehicles = await vehicleRepository.GetAllAsync();
-            return mapper.Map<List<VehicleResource>>(vehicles);
+            Console.WriteLine(vehicles);
+            if (vehicles == null)
+                return NotFound();
+            return Ok(mapper.Map<List<VehicleResource>>(vehicles));
         }
 
         [AllowAnonymous]

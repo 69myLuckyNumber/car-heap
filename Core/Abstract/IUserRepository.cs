@@ -5,6 +5,8 @@ namespace car_heap.Core.Abstract
 {
     public interface IUserRepository
     {
-         Task<ApplicationUser> GetCurrentUser();
+        Task<ApplicationUser> GetCurrentUser();
+
+        Task<ApplicationUser> FindByUserNameAsync(string username, bool includeRelated = true);
     }
 }

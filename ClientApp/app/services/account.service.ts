@@ -15,12 +15,13 @@ import { handleError } from '../common/errors/response-error-handler';
 import { IRegisterModel } from '../models/register.model';
 import { ILoginModel } from '../models/login.model';
 import { IUser } from '../models/user.model';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class AccountService {
 	private baseUrl: string;
 
-	constructor(private http: Http, @Inject('BASE_URL') baseUrl: string) {
+	constructor(private http: Http, @Inject('BASE_URL') baseUrl: string, private router: Router) {
 		this.baseUrl = baseUrl;
 	}
 
@@ -61,6 +62,8 @@ export class AccountService {
 	logout() {
 		if (typeof window !== 'undefined') 
 			localStorage.removeItem('token');
+			
+		this.router.navigate(['/']);
 	}
 
 	isLoggedIn() {
@@ -74,6 +77,7 @@ export class AccountService {
 			token = localStorage.getItem('token');
 		
 		if(!token) return null;
+		
 		return new JwtHelper().decodeToken(token);
 	}
 

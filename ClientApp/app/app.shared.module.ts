@@ -14,6 +14,12 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { HomeComponent } from './components/home/home.component';
 import { LoginFormComponent } from './components/login-form/login-form.component';
 import { AuthGuard } from './services/auth-guard.service';
+import { VehicleFormComponent } from './components/vehicle-form/vehicle-form.component';
+import { VehicleService } from './services/vehicle.service';
+
+import { AUTH_PROVIDERS } from "angular2-jwt/angular2-jwt";
+import { VehicleViewComponent } from './components/vehicle-view/vehicle-view.component';
+import { UserViewComponent } from './components/user-view/user-view.component';
 
 @NgModule({
     declarations: [
@@ -22,7 +28,10 @@ import { AuthGuard } from './services/auth-guard.service';
         HomeComponent,
         NotFoundComponent,
         NavbarComponent,
-        LoginFormComponent
+        LoginFormComponent,
+        VehicleFormComponent,
+        VehicleViewComponent,
+        UserViewComponent
     ],
     imports: [
         CommonModule,
@@ -30,7 +39,10 @@ import { AuthGuard } from './services/auth-guard.service';
         FormsModule,
         ReactiveFormsModule,
         RouterModule.forRoot([
-            {  path: '', redirectTo: 'home', pathMatch: 'full' },
+            { path: '', redirectTo: '/home', pathMatch: 'full' },
+            { path: 'user/:username', component: UserViewComponent },
+            { path: 'vehicle/new', component: VehicleFormComponent, canActivate: [AuthGuard] },
+            { path: 'vehicle/:id', component: VehicleViewComponent },
             { path: 'home' , component: HomeComponent },
             { path: 'register', component: SignupFormComponent },
             { path: 'login', component: LoginFormComponent },
@@ -40,7 +52,9 @@ import { AuthGuard } from './services/auth-guard.service';
     providers: [
         AccountService,
         {provide: ErrorHandler, useClass: AppErrorHandler},
-        AuthGuard
+        AuthGuard,
+        VehicleService,
+        AUTH_PROVIDERS
     ]
 })
 export class AppModuleShared {

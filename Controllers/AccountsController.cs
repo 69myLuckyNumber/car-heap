@@ -20,10 +20,12 @@ namespace car_heap.Controllers
         private readonly IMapper mapper;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IJwtFactory jwtFactory;
+        private readonly IUserRepository userRepository;
 
         public AccountsController(IMapper mapper, UserManager<ApplicationUser> userManager,
-            IJwtFactory jwtFactory)
+            IJwtFactory jwtFactory, IUserRepository userRepository)
         {
+            this.userRepository = userRepository;
             this.userManager = userManager;
             this.jwtFactory = jwtFactory;
             this.mapper = mapper;
@@ -32,19 +34,21 @@ namespace car_heap.Controllers
         [HttpGet("{username}")]
         public async Task<IActionResult> GetAccountByName(string username)
         {
-            var user = await userManager.FindByNameAsync(username);
-            if(user != null)
+            var user = await userRepository.FindByUserNameAsync(username);
+            if (user != null)
                 return Ok(mapper.Map<PlainUserResource>(user));
             return NotFound();
         }
+
         [HttpGet("id/{id}")]
         public async Task<IActionResult> GetAccountById(string id)
         {
             var user = await userManager.FindByIdAsync(id);
-            if(user != null)
+            if (user != null)
                 return Ok(mapper.Map<PlainUserResource>(user));
             return NotFound();
         }
+
         [HttpPost]
         public async Task<IActionResult> Register([FromBody] SaveUserResource userResource)
         {
@@ -53,7 +57,7 @@ namespace car_heap.Controllers
 
             var userIdentity = mapper.Map<ApplicationUser>(userResource);
             userIdentity.DateRegistered = DateTime.Now;
-            
+
             var result = await userManager.CreateAsync(userIdentity, userResource.Password);
             if (!result.Succeeded)
                 return BadRequest(ModelState.AddIdentityResultErrors(result));
@@ -74,11 +78,11 @@ namespace car_heap.Controllers
                 ModelState.AddModelError("login_failure", "Invalid credentials");
                 return BadRequest(ModelState);
             }
-            
-            var jwt = await jwtFactory.GenerateJwtAsync(user.Id, credentials.UserName, 
+
+            var jwt = await jwtFactory.GenerateJwtAsync(user.Id, credentials.UserName,
                 credentials.Password, new JsonSerializerSettings { Formatting = Formatting.Indented });
 
-            return Ok(jwt); 
+            return Ok(jwt);
         }
 
     }

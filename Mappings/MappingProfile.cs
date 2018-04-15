@@ -79,34 +79,7 @@ namespace car_heap.Mappings
                 .ForMember(vr => vr.Model, opts =>
                     opts.MapFrom(v => new KeyValuePairResource { Id = v.ModelId, Name = v.Model.Name }))
                 .ForMember(vr => vr.Name, opts => opts.MapFrom(v => v.Name))
-                .ForMember(vr => vr.Orders, opts => opts.MapFrom(v =>
-                    v.Orders.Select(o => new PlainOrderResource
-                    {
-                        Vehicle = new PlainVehicleResource
-                            {
-                                Id = o.VehicleId,
-                                    Name = o.Vehicle.Name,
-                                    IsRegistered = o.Vehicle.IsRegistered,
-                                    Model = new KeyValuePairResource { Id = o.Vehicle.ModelId, Name = o.Vehicle.Model.Name },
-                                    Make = new KeyValuePairResource { Id = o.Vehicle.Model.MakeId, Name = o.Vehicle.Model.Make.Name }
-                            },
-                            User = new PlainUserResource
-                            {
-                                Id = o.Identity.Id,
-                                    UserName = o.Identity.UserName,
-                                    DateRegistered = o.Identity.DateRegistered,
-                                    Contact = new ContactResource
-                                    {
-                                        Id = v.Identity.Contact.ContactId,
-                                            FirstName = v.Identity.Contact.FirstName,
-                                            LastName = v.Identity.Contact.LastName,
-                                            Phone = v.Identity.Contact.Phone,
-                                            Email = v.Identity.Email
-                                    }
-                            },
-                            Comment = o.Comment, DateExpired = o.DateExpired, DateRequested = o.DateRequested,
-                            Status = new KeyValuePairResource { Id = o.StatusId, Name = o.Status.Name }
-                    })))
+                .ForMember(vr => vr.Orders, opts => opts.Ignore())
                 .ForMember(vr => vr.User, opts => opts.MapFrom(v => new PlainUserResource
                 {
                     Id = v.IdentityId,

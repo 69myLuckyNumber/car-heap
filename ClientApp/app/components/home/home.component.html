@@ -1,3 +1,30 @@
-<p>
-  home works!
-</p>
+<div class="row">
+<div *ngFor="let vehicle of vehicles">
+    <div class="col-md-3">
+      <div *ngIf="vehicle" class="panel panel-info">
+        <div class="panel-heading">
+         <a routerLink="/vehicle/{{ vehicle.id }}">{{ vehicle.name }}</a> 
+        </div>
+        <div class="panel-body">
+          <h2>Basics</h2>
+          <ul>
+            <li>Make: {{ vehicle.make.name }}</li>
+            <li>Model: {{ vehicle.model.name }}</li>
+            <li>Registered: {{ vehicle.isRegistered ? 'Yes' : 'No' }}
+          </ul>
+          <h2 *ngIf="vehicle.features.length > 0">Features</h2>
+          <ul>
+            <li *ngFor="let f of vehicle.features">{{ f.name }}</li>
+          </ul>
+          <h2>Contact</h2>
+          <ul>
+            <li>Contact Name: {{ vehicle.user.contact.firstName }} {{ vehicle.user.contact.lastName }}</li>
+            <li *ngIf="vehicle.user.contact.phone">Contact Phone: {{ vehicle.user.contact.phone }}</li>
+            <li>Contact Email: {{ vehicle.user.contact.email }}</li>
+          </ul>
+          <a routerLink="/vehicle/{{ vehicle.id }}"><button class="btn btn-info btn-block">Details</button></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
