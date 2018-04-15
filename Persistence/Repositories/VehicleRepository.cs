@@ -1,8 +1,9 @@
-using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using car_heap.Core.Abstract;
 using car_heap.Core.Models;
-using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 
 namespace car_heap.Persistence.Repositories
 {
@@ -22,45 +23,69 @@ namespace car_heap.Persistence.Repositories
 
         public async Task<IEnumerable<Vehicle>> GetAllAsync(bool includeRelated = true)
         {
-            if(!includeRelated)
+            if (!includeRelated)
                 return context.Vehicles;
             return await context.Vehicles
                 .Include(v => v.Model)
-                    .ThenInclude(m => m.Make)
+                .ThenInclude(m => m.Make)
                 .Include(v => v.Features)
-                    .ThenInclude(vf => vf.Feature)
+                .ThenInclude(vf => vf.Feature)
                 .Include(v => v.Orders)
-                    .ThenInclude(o => o.Identity)
+                .ThenInclude(o => o.Identity)
                 .Include(v => v.Orders)
-                    .ThenInclude(o => o.Vehicle)
-                    .ThenInclude(v => v.Model)
-                    .ThenInclude(m => m.Make)
+                .ThenInclude(o => o.Vehicle)
+                .ThenInclude(v => v.Model)
+                .ThenInclude(m => m.Make)
                 .Include(v => v.Orders)
                 .Include(v => v.Identity)
-                    .ThenInclude(v => v.Contact)
+                .ThenInclude(v => v.Contact)
                 .ToListAsync();
         }
 
         public async Task<Vehicle> GetAsync(int id, bool includeRelated = true)
         {
-            if(!includeRelated)
+            if (!includeRelated)
                 return await context.Vehicles.SingleOrDefaultAsync(v => v.VehicleId == id);
             return await context.Vehicles
                 .Include(v => v.Model)
-                    .ThenInclude(m => m.Make)
+                .ThenInclude(m => m.Make)
                 .Include(v => v.Features)
-                    .ThenInclude(vf => vf.Feature)
+                .ThenInclude(vf => vf.Feature)
                 .Include(v => v.Orders)
-                    .ThenInclude(o => o.Identity)
+                .ThenInclude(o => o.Identity)
                 .Include(v => v.Orders)
-                    .ThenInclude(o => o.Vehicle)
-                    .ThenInclude(v => v.Model)
-                    .ThenInclude(m => m.Make)
+                .ThenInclude(o => o.Vehicle)
+                .ThenInclude(v => v.Model)
+                .ThenInclude(m => m.Make)
                 .Include(v => v.Orders)
-                    .ThenInclude(o => o.Identity)
+                .ThenInclude(o => o.Identity)
                 .Include(v => v.Identity)
-                    .ThenInclude(v => v.Contact)
+                .ThenInclude(v => v.Contact)
                 .SingleOrDefaultAsync(v => v.VehicleId == id);
+        }
+
+        public async Task<IEnumerable<Vehicle>> GetUserVehicles(string username, bool includeRelated = true)
+        {
+            if (!includeRelated)
+                return await context.Vehicles.Where(v => v.Identity.UserName == username)
+                    .ToListAsync();
+
+            return await context.Vehicles.Where(v => v.Identity.UserName == username)
+                .Include(v => v.Model)
+                .ThenInclude(m => m.Make)
+                .Include(v => v.Features)
+                .ThenInclude(vf => vf.Feature)
+                .Include(v => v.Orders)
+                .ThenInclude(o => o.Identity)
+                .Include(v => v.Orders)
+                .ThenInclude(o => o.Vehicle)
+                .ThenInclude(v => v.Model)
+                .ThenInclude(m => m.Make)
+                .Include(v => v.Orders)
+                .ThenInclude(o => o.Identity)
+                .Include(v => v.Identity)
+                .ThenInclude(v => v.Contact)
+                .ToListAsync();
         }
 
         public void Remove(Vehicle vehicle)

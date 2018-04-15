@@ -8,6 +8,8 @@ namespace car_heap.Core.Models
 
         public int VehicleId { get; set; }
 
+        public Vehicle Vehicle { get; set; }
+
         [Required]
         [StringLength(255)]
         public string FileName { get; set; }

@@ -1,0 +1,24 @@
+<h1>Vehicles</h1>
+<hr>
+<table class="table table-hover">
+  <thead>
+      <tr>
+          <th>Name</th>
+          <th>Make</th>
+          <th>Model</th>
+          <th>Registered</th>
+        </tr>
+  </thead>
+  
+  <tbody>
+    <tr *ngFor="let vehicle of vehicles">
+      <td>{{ vehicle.name }}</td>
+      <td>{{ vehicle.make.name }}</td>
+      <td>{{ vehicle.model.name }}</td>
+      <td>{{ vehicle.isRegistered ? 'Yes' : 'No' }}</td>
+      <td>
+          <a [routerLink]="['/vehicle/', vehicle.id]">View</a>
+      </td>
+    </tr>
+  </tbody>
+  </table>

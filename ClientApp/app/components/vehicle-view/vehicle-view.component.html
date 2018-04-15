@@ -1,32 +1,48 @@
-<div class="row">
-  <div class="col-md-4 col-md-offset-4">
+<h1 *ngIf="vehicle">Vehicle: {{  vehicle.name}}</h1>
+<div>
 
-    <div *ngIf="vehicle" class="panel panel-info">
-      <div class="panel-heading">
-        {{ vehicle.name }}
-      </div>
-      <div class="panel-body">
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#basic" aria-controls="basic" role="tab" data-toggle="tab">Vehicle</a></li>
+    <li role="presentation"><a href="#photos" aria-controls="photos" role="tab" data-toggle="tab">Photos</a></li>
+  </ul>
 
-        <h2>Basics</h2>
-        <ul>
-          <li>Make: {{ vehicle.make.name }}</li>
-          <li>Model: {{ vehicle.model.name }}</li>
-          <li>Registered: {{ vehicle.isRegistered ? 'Yes' : 'No' }}
-        </ul>
-        <h2 *ngIf="vehicle.features.length > 0">Features</h2>
-        <ul>
-          <li *ngFor="let f of vehicle.features">{{ f.name }}</li>
-        </ul>
-        <h2><a routerLink="/user/{{ vehicle.user.userName }}">Contact</a></h2>
-        <ul>
+  <!-- Tab panes -->
+  <div class="tab-content" *ngIf="vehicle">
+    <!-- Vehicle tab -->
+    <div role="tabpanel" class="tab-pane active" id="basic">
+      <h2>Basics</h2>
+      <ul>
+        <li>Make: {{ vehicle.make.name }}</li>
+        <li>Model: {{ vehicle.model.name }}</li>
+        <li>Registered: {{ vehicle.isRegistered ? 'Yes' : 'No' }}
+      </ul>
+      <h2>Features</h2>
+      <ul>
+        <li *ngFor="let f of vehicle.features">{{ f.name }}</li>
+      </ul>
+      <h2>Contact</h2>
+      <ul>
           <li>Contact Name: {{ vehicle.user.contact.firstName }} {{ vehicle.user.contact.lastName }}</li>
           <li *ngIf="vehicle.user.contact.phone">Contact Phone: {{ vehicle.user.contact.phone }}</li>
           <li>Contact Email: {{ vehicle.user.contact.email }}</li>
         </ul>
-        <button class="btn btn-info btn-block" *ngIf="accountService.isLoggedIn() && accountService.currentUser.id == vehicle.user.id" (click)="deleteVehicle(vehicle.id)">Delete</button>
-      </div>
-
+      <br/>
+      <p>
+        <button class="btn btn-info" *ngIf="accountService.isLoggedIn() && accountService.currentUser.id == vehicle.user.id" (click)="deleteVehicle(vehicle.id)">Delete</button>
+        <a class="btn btn-default" [routerLink]="['/vehicles/', vehicle.user.userName]">View All Vehicles</a>
+      </p>
     </div>
-
+    <!-- Photos tab -->
+    <div role="tabpanel" class="tab-pane" id="photos">
+      <h2>Photos</h2>
+      <input *ngIf="accountService.isLoggedIn() && accountService.currentUser.id == vehicle.user.id" type="file" (change)="uploadPhoto()" #fileInput>
+      <div class="alert alert-danger" *ngIf="uploadError">{{ uploadError }}</div>
+      <div class="row">
+          <div class="col-xs-6 col-md-3" *ngFor="let photo of photos">
+              <img src="/uploads/{{ photo.fileName }}" class="img-responsive thumbnail" height="300" width="250">
+            </div>
+      </div>
+    </div>
   </div>
 </div>

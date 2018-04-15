@@ -10,6 +10,9 @@
       <li *ngIf="accountService.isLoggedIn()" routerLinkActive="active current">
         <a routerLink="/vehicle/new">Create</a>
       </li>
+      <li *ngIf="accountService.isLoggedIn()" routerLinkActive="active current">
+          <a routerLink="/vehicles/{{ accountService.currentUser.sub }}">My Vehicles</a>
+        </li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
       <p *ngIf="accountService.isLoggedIn()" class="navbar-text navbar-right">Signed in as <a routerLink="/user/{{ accountService.currentUser.sub }}">{{ accountService.currentUser.sub }}</a></p>

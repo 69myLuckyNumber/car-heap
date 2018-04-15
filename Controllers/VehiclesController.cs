@@ -32,11 +32,20 @@ namespace car_heap.Controllers
         }
 
         [AllowAnonymous]
+        [HttpGet("user/{username}")]
+        public async Task<ActionResult> GetUserVehicles(string username)
+        {
+            var vehicles = await vehicleRepository.GetUserVehicles(username);
+            if (vehicles == null)
+                return NotFound();
+            return Ok(mapper.Map<List<VehicleResource>>(vehicles));
+        }
+
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult> GetVehicles()
         {
             var vehicles = await vehicleRepository.GetAllAsync();
-            Console.WriteLine(vehicles);
             if (vehicles == null)
                 return NotFound();
             return Ok(mapper.Map<List<VehicleResource>>(vehicles));

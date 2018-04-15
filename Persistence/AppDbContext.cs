@@ -56,6 +56,12 @@ namespace car_heap.Persistence
                 .WithMany(v => v.Orders)
                 .HasForeignKey(o => o.IdentityId);
 
+            modelBuilder.Entity<Vehicle>()
+                .HasMany(v => v.Photos)
+                .WithOne(p => p.Vehicle)
+                .HasForeignKey(p=> p.VehicleId)
+                .OnDelete(DeleteBehavior.Cascade);
+                
             base.OnModelCreating(modelBuilder);
 
         }

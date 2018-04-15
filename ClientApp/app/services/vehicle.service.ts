@@ -36,9 +36,13 @@ export class VehicleService {
 	}
 	getVehicles() {
 		return this.http.get('http://localhost:57255/api/vehicles/')
-		.map(res => res.json())
-		.catch(handleError);	
-		
+			.map(res => res.json())
+			.catch(handleError);	
+	}
+	getUserVehicles(username: string) {
+		return this.http.get(this.baseUrl + '/api/vehicles/user/' + username)
+			.map(res => res.json())
+			.catch(handleError);
 	}
 	deleteVehicle(id:number) {
 		return this.authHttp.delete(this.baseUrl + '/api/vehicles/delete/' + id)

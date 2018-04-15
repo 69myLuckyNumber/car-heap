@@ -20,6 +20,8 @@ import { VehicleService } from './services/vehicle.service';
 import { AUTH_PROVIDERS } from "angular2-jwt/angular2-jwt";
 import { VehicleViewComponent } from './components/vehicle-view/vehicle-view.component';
 import { UserViewComponent } from './components/user-view/user-view.component';
+import { PhotoService } from './services/photo.service';
+import { VehicleListComponent } from './components/vehicle-list/vehicle-list.component';
 
 @NgModule({
     declarations: [
@@ -31,7 +33,8 @@ import { UserViewComponent } from './components/user-view/user-view.component';
         LoginFormComponent,
         VehicleFormComponent,
         VehicleViewComponent,
-        UserViewComponent
+        UserViewComponent,
+        VehicleListComponent
     ],
     imports: [
         CommonModule,
@@ -43,6 +46,7 @@ import { UserViewComponent } from './components/user-view/user-view.component';
             { path: 'user/:username', component: UserViewComponent },
             { path: 'vehicle/new', component: VehicleFormComponent, canActivate: [AuthGuard] },
             { path: 'vehicle/:id', component: VehicleViewComponent },
+            { path: 'vehicles/:username', component: VehicleListComponent },
             { path: 'home' , component: HomeComponent },
             { path: 'register', component: SignupFormComponent },
             { path: 'login', component: LoginFormComponent },
@@ -54,7 +58,8 @@ import { UserViewComponent } from './components/user-view/user-view.component';
         {provide: ErrorHandler, useClass: AppErrorHandler},
         AuthGuard,
         VehicleService,
-        AUTH_PROVIDERS
+        AUTH_PROVIDERS,
+        PhotoService
     ]
 })
 export class AppModuleShared {

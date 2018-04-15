@@ -13,5 +13,7 @@ namespace car_heap.Core.Abstract
         Task<Vehicle> GetAsync(int id, bool includeRelated = true);
 
         void Remove(Vehicle vehicle);
+
+        Task<IEnumerable<Vehicle>> GetUserVehicles(string username, bool includeRelated = true);
     }
 }
