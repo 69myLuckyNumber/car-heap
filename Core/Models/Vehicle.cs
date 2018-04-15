@@ -22,6 +22,8 @@ namespace car_heap.Core.Models
 
         public ICollection<Order> Orders { get; set; }
 
+        public ICollection<Photo> Photos { get; set; }
+
         public int ModelId { get; set; }
         public Model Model { get; set; }
 
@@ -32,6 +34,7 @@ namespace car_heap.Core.Models
         {
             Features = new Collection<Integration>();
             Orders = new Collection<Order>();
+            Photos = new Collection<Photo>();
         }
     }
 }
