@@ -29,7 +29,8 @@
         </ul>
       <br/>
       <p>
-        <button class="btn btn-info" *ngIf="accountService.isLoggedIn() && accountService.currentUser.id == vehicle.user.id" (click)="deleteVehicle(vehicle.id)">Delete</button>
+        <button class="btn btn-danger" *ngIf="accountService.isLoggedIn() && accountService.currentUser.id == vehicle.user.id" (click)="deleteVehicle(vehicle.id)">Delete</button>
+        <a class="btn btn-primary" *ngIf="accountService.isLoggedIn() && accountService.currentUser.id == vehicle.user.id" [routerLink]="['/vehicle/edit/', vehicle.id]">Edit</a>
         <a class="btn btn-default" [routerLink]="['/vehicles/', vehicle.user.userName]">View All Vehicles</a>
       </p>
     </div>
@@ -37,6 +38,7 @@
     <div role="tabpanel" class="tab-pane" id="photos">
       <h2>Photos</h2>
       <input *ngIf="accountService.isLoggedIn() && accountService.currentUser.id == vehicle.user.id" type="file" (change)="uploadPhoto()" #fileInput>
+      <hr>
       <div class="alert alert-danger" *ngIf="uploadError">{{ uploadError }}</div>
       <div class="row">
           <div class="col-xs-6 col-md-3" *ngFor="let photo of photos">

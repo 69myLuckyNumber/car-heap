@@ -44,7 +44,8 @@ import { VehicleListComponent } from './components/vehicle-list/vehicle-list.com
         RouterModule.forRoot([
             { path: '', redirectTo: '/home', pathMatch: 'full' },
             { path: 'user/:username', component: UserViewComponent },
-            { path: 'vehicle/new', component: VehicleFormComponent, canActivate: [AuthGuard] },
+            { path: 'vehicle/new', component: VehicleFormComponent, canActivate: [ AuthGuard ] },
+            { path: 'vehicle/edit/:id', component: VehicleFormComponent, canActivate: [ AuthGuard ] },
             { path: 'vehicle/:id', component: VehicleViewComponent },
             { path: 'vehicles/:username', component: VehicleListComponent },
             { path: 'home' , component: HomeComponent },

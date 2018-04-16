@@ -2,7 +2,8 @@
     <div class="row">
       <div class="panel panel-default">
         <div class="panel-body">
-            <h1>New Vehicle</h1>
+            <h1 *ngIf="vehicle.id == 0">New Vehicle</h1>
+            <h1 *ngIf="vehicle.id != 0">Update Vehicle</h1>
             <form #f="ngForm" (ngSubmit)="submit(f)">
               <div class="alert alert-danger" *ngIf="!isValid">
                 Enter valid information.
@@ -42,7 +43,7 @@
                 </label>
               </div>
               
-              <button class="btn btn-info btn-block" [disabled]="f.invalid || !isValid">Create</button>
+              <button class="btn btn-info btn-block" [disabled]="f.invalid || !isValid">Save</button>
             </form>
         </div>
       </div>

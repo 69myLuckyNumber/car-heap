@@ -49,4 +49,9 @@ export class VehicleService {
 			.map(res => res.json())
 			.catch(handleError);
 	}
+	update(vehicle: ISaveVehicle) {
+		return this.authHttp.put(this.baseUrl + '/api/vehicles/update/' + vehicle.id, vehicle)
+		  .map(res => res.json())
+		  .catch(handleError);
+	}
 }
