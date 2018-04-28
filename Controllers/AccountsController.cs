@@ -73,12 +73,17 @@ namespace car_heap.Controllers
 
             //check credentials
             var user = await userManager.FindByNameAsync(credentials.UserName);
-            if (user == null && !await userManager.CheckPasswordAsync(user, credentials.Password))
+            if (user == null)
             {
                 ModelState.AddModelError("login_failure", "Invalid credentials");
                 return BadRequest(ModelState);
             }
 
+            if(!await userManager.CheckPasswordAsync(user, credentials.Password)) 
+            {
+                ModelState.AddModelError("login_failure", "Invalid credentials");
+                return BadRequest(ModelState);
+            }
             var jwt = await jwtFactory.GenerateJwtAsync(user.Id, credentials.UserName,
                 credentials.Password, new JsonSerializerSettings { Formatting = Formatting.Indented });
 
